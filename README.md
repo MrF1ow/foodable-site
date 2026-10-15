@@ -1,36 +1,39 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# foodable-site
 
-## Getting Started
+The marketing site for [Foodable](https://github.com/MrF1ow/foodable), the self-hosted kitchen app for one household.
 
-First, run the development server:
+Next.js (static export) + Tailwind 4 + [Magic UI](https://magicui.design) components.
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+bun install
+bun dev          # http://localhost:3000
+bun run build    # static site in out/
+bun run lint
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+`out/` is plain HTML, CSS and JS, so it can go on GitHub Pages, Cloudflare Pages, Netlify, Vercel or any bucket.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Agent files
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+`AGENTS.md` is the only instructions file. Codex, Cursor, Copilot, OpenCode and Grok read it directly. `CLAUDE.md` and `GEMINI.md` are symlinks to it for Claude Code and Gemini CLI. Edit only `AGENTS.md`. Agent-specific notes go in a section headed with the agent name.
 
-## Learn More
+## Layout
 
-To learn more about Next.js, take a look at the following resources:
+- `src/app/page.tsx` assembles the sections in `src/components/site/`.
+- `src/components/ui/` holds the shadcn / Magic UI components as the registry ships them (`bunx shadcn@latest add @magicui/<name>`). They are excluded from lint. Local change: `safari.tsx` and `iphone.tsx` give their SVG mask ids a per-instance `useId()` suffix, because several frames share the page and the light/dark twins sit in `display: none` wrappers, which breaks a shared id.
+- `src/lib/site.ts` holds the repo and docs URLs.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Screenshots
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+`public/shots/` are real app screens from the main repo's fixture preview, one per theme:
 
-## Deploy on Vercel
+```bash
+# in the foodable repo
+bun run preview:app     # serves fixture pages on :4787
+# then, per page and theme (desktop 1200x700 for the Safari frame, 390x844 for the iPhone frame):
+chromium --headless=new --hide-scrollbars --force-device-scale-factor=2 \
+  --window-size=1200,700 --screenshot=nutrition-light.png \
+  http://localhost:4787/nutrition-light.html
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Brand assets in `public/brand/`, `src/app/favicon.ico` and `public/apple-touch-icon.png` are copied from the main repo (`bun run gen:icons` there). Accent is the logo green `#28cf8b`; text on it is `#062c1c`.

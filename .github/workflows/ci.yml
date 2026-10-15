@@ -1,0 +1,31 @@
+name: CI
+
+# Runs on every pull request and every push to main. `next build` also
+# typechecks, so a green build means the static export in out/ is shippable.
+
+on:
+  pull_request:
+  push:
+    branches: ["main"]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.2
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Lint
+        run: bun run lint
+
+      - name: Build static site
+        run: bun run build
