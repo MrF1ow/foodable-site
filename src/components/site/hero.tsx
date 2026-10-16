@@ -42,16 +42,16 @@ export function Hero() {
 
         <BlurFade delay={0.15} inView>
           <h1 className="mt-6 max-w-4xl text-5xl leading-[1.05] font-bold text-balance sm:text-6xl lg:text-7xl">
-            One kitchen. One app.{" "}
-            <AuroraText colors={GREENS}>Finally.</AuroraText>
+            Making food more <AuroraText colors={GREENS}>doable.</AuroraText>
           </h1>
         </BlurFade>
 
         <BlurFade delay={0.25} inView>
           <p className="mt-6 max-w-2xl text-lg text-balance text-muted-foreground sm:text-xl">
-            Foodable keeps your fridge, grocery list, recipes and nutrition in
-            one friendly place, and lets you run it by just talking to your AI
-            assistant. Built for your household. Hosted by you.
+            One kitchen, one app. Foodable keeps your fridge, grocery list,
+            recipes and nutrition together, and lets you run it all by just
+            talking to your AI assistant. Built for your household, hosted by
+            you.
           </p>
         </BlurFade>
 

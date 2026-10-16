@@ -19,7 +19,7 @@ const bricolage = Bricolage_Grotesque({
 });
 
 export const metadata: Metadata = {
-  title: "Foodable — your whole kitchen, in one place",
+  title: "Foodable — Making food more doable",
   description:
     "Fridge, groceries, recipes and nutrition in one free, open-source app you host yourself. Run it from the web or just talk to your AI assistant.",
   icons: {
@@ -27,9 +27,9 @@ export const metadata: Metadata = {
     apple: "/apple-touch-icon.png",
   },
   openGraph: {
-    title: "Foodable",
+    title: "Foodable — Making food more doable",
     description:
-      "One kitchen. One app. Free, open source and hosted by you.",
+      "One kitchen, one app. Free, open source and hosted by you.",
     type: "website",
   },
 };

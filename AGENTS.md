@@ -31,6 +31,7 @@ There is no formatter yet. Do not add Prettier: the owner wants Bun-only tooling
 
 ## Brand and design
 
+- **Slogan:** "Foodable, Making Food More Doable". On the page it runs in sentence case: the hero headline is "Making food more *doable*.", and it is also the browser tab title, the link-preview title and the footer tagline. Keep the name/"doable" rhyme intact, and keep the slogan as the headline.
 - **One accent:** the logo green `#28cf8b` (`--brand`, also `--primary`), the same in light and dark. Text on a green fill is `#062c1c` (`--on-brand`, `text-on-brand`), never white. Soft green backgrounds use `--brand-soft`. Do not add other accent colors.
 - **Fonts:** Bricolage Grotesque for headings (`font-heading`, applied to h1–h3 automatically) and Geist for body text.
 - **Themes:** `next-themes` toggles the class, and the default follows the system setting. Every section must look right in both themes, so check both.

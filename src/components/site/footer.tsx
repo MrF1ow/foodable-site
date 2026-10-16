@@ -76,7 +76,10 @@ export function Footer() {
       <div className="mx-auto flex max-w-6xl flex-col gap-8 px-5 sm:flex-row sm:items-start sm:justify-between">
         <div className="max-w-sm">
           <Logo />
-          <p className="mt-3 text-sm text-muted-foreground">
+          <p className="mt-3 font-heading font-semibold">
+            Making food more doable.
+          </p>
+          <p className="mt-2 text-sm text-muted-foreground">
             Built at a kitchen table by a household that got tired of juggling
             apps. Free and open source under the MIT license.
           </p>
