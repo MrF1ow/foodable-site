@@ -1,0 +1,11 @@
+// Cloudflare Workers static assets. The site is a plain static export, so
+// there is no Worker script: Cloudflare serves `out/` directly.
+{
+  "name": "foodable-site",
+  "compatibility_date": "2026-10-29",
+  "assets": {
+    "directory": "./out",
+    "not_found_handling": "404-page"
+  },
+  "routes": [{ "pattern": "foodable.xyz", "custom_domain": true }]
+}
