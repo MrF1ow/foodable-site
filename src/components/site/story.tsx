@@ -47,7 +47,7 @@ export function Story() {
               Half of them wanted a subscription.
             </p>
             <p>
-              I’m a senior software engineer, so one night the question became
+              I’m a software engineer, so one night the question became
               pretty simple: <em className="text-foreground">why not?</em> Why not
               build the one app we actually wanted, the one where buying,
               storing, cooking and eating are all the same story?
