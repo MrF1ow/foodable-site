@@ -1,6 +1,6 @@
 import { BookOpen, Database, Server, Zap } from "lucide-react";
 
-import { BlurFade } from "@/components/ui/blur-fade";
+import { Reveal } from "./reveal";
 import { MagicCard } from "@/components/ui/magic-card";
 import {
   AnimatedSpan,
@@ -43,7 +43,7 @@ export function SelfHost() {
         </SectionHeading>
 
         <div className="mt-14 grid items-start gap-8 lg:grid-cols-[1.15fr_1fr] [&>*]:min-w-0">
-          <BlurFade inView delay={0.1}>
+          <Reveal inView delay={0.1}>
             <Terminal className="max-h-none overflow-x-auto w-full max-w-none bg-card shadow-xl" sequence startOnView>
               <TypingAnimation>$ git clone https://github.com/MrF1ow/foodable</TypingAnimation>
               <TypingAnimation>$ cd foodable &amp;&amp; bun install</TypingAnimation>
@@ -64,11 +64,11 @@ export function SelfHost() {
                 🥗 Foodable is cooking on http://localhost:8080
               </AnimatedSpan>
             </Terminal>
-          </BlurFade>
+          </Reveal>
 
           <div className="flex flex-col gap-4">
             {NEEDS.map((n, i) => (
-              <BlurFade key={n.title} inView delay={0.15 + i * 0.08}>
+              <Reveal key={n.title} inView delay={0.15 + i * 0.08}>
                 <MagicCard
                   className="rounded-2xl"
                   gradientColor="rgba(40,207,139,0.12)"
@@ -87,9 +87,9 @@ export function SelfHost() {
                     </div>
                   </div>
                 </MagicCard>
-              </BlurFade>
+              </Reveal>
             ))}
-            <BlurFade inView delay={0.4}>
+            <Reveal inView delay={0.4}>
               <a
                 href={DOCS_URL}
                 className="inline-flex items-center gap-2 px-1 text-sm font-medium text-brand hover:underline"
@@ -97,7 +97,7 @@ export function SelfHost() {
                 <BookOpen className="size-4" />
                 Read the full self-hosting guide
               </a>
-            </BlurFade>
+            </Reveal>
           </div>
         </div>
       </div>

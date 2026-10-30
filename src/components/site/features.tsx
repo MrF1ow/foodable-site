@@ -11,7 +11,7 @@ import {
 
 import { AnimatedList } from "@/components/ui/animated-list";
 import { BentoCard, BentoGrid } from "@/components/ui/bento-grid";
-import { BlurFade } from "@/components/ui/blur-fade";
+import { Reveal } from "./reveal";
 import { Marquee } from "@/components/ui/marquee";
 import { DOCS_URL, REPO_URL } from "@/lib/site";
 import { cn } from "@/lib/utils";
@@ -264,13 +264,13 @@ export function Features() {
           Five parts that share one catalog of foods, so nothing gets typed
           twice and nothing falls through the cracks.
         </SectionHeading>
-        <BlurFade inView delay={0.1}>
+        <Reveal inView delay={0.1}>
           <BentoGrid className="mt-14 auto-rows-[26rem] lg:auto-rows-[22rem] lg:grid-cols-3">
             {CARDS.map((c) => (
               <BentoCard key={c.name} {...c} />
             ))}
           </BentoGrid>
-        </BlurFade>
+        </Reveal>
       </div>
     </section>
   );

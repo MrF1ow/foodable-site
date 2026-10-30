@@ -23,7 +23,7 @@ There is no formatter yet. Do not add Prettier: the owner wants Bun-only tooling
 ## Layout
 
 - `src/app/page.tsx` puts the sections together in order: Nav, Hero, Story, Loop, Chat, Features, Screens, SelfHost, Faq, FinalCta, Footer.
-- `src/components/site/` holds one file per section, plus the small helpers `logo.tsx`, `section-heading.tsx`, `themed-shot.tsx` and `github-icon.tsx`.
+- `src/components/site/` holds one file per section, plus the small helpers `logo.tsx`, `section-heading.tsx`, `themed-shot.tsx`, `reveal.tsx` and `github-icon.tsx`.
 - `src/components/ui/` holds vendored shadcn / Magic UI components, kept as the registry ships them and excluded from lint. The one local change: `safari.tsx` and `iphone.tsx` add a per-instance `useId()` suffix to their SVG mask and clip ids. Keep that change if you re-pull them (see Gotchas).
 - `src/lib/site.ts` holds the site, repo, docs and upstream URLs. Link through these constants and never hardcode the URLs.
 - `src/app/globals.css` holds the theme tokens.
@@ -50,7 +50,7 @@ Every claim on the page must be true of the main repo. Check there before changi
 
 ## Screenshots
 
-`public/shots/*.png` are real app pages rendered from fixture data, not mockups. To regenerate them, run this in the main repo:
+`public/shots/*.webp` are real app pages rendered from fixture data, not mockups. To regenerate them, run this in the main repo:
 
 ```bash
 bun run preview:app   # serves fixture pages on http://localhost:4787/<page>-<light|dark>.html
@@ -61,6 +61,12 @@ Then capture each page with headless Chromium at device scale factor 2:
 - `nutrition-{light,dark}.png` at 1200×700 (the Safari frame's screen ratio).
 - `{fridge,grocery,recipe}-{light,dark}-mobile.png` at 390×844 (the iPhone frame's screen).
 
+Convert each capture to WebP before committing (PNGs are ~4× bigger and the hero shot is the page's LCP element):
+
+```bash
+magick shot.png -quality 82 -define webp:method=6 shot.webp
+```
+
 Each image ships in a light and a dark version, swapped with `<Themed light={…} dark={…} />`.
 
 ## Gotchas (each was a real bug here)
@@ -69,6 +75,7 @@ Each image ships in a light and a dark version, swapped with `<Themed light={…
 - **Swap themed content with wrapper divs.** Use `Themed` (wrapper divs) rather than `hidden dark:block` on a component that sets its own `display` (`inline-block`). Which class wins then depends on CSS order.
 - **Marquees inside grid items cause horizontal overflow on mobile.** A grid item's `min-width: auto` grows to the marquee's full width, and the page was once 4364px wide at 390px. Two-column section grids use `[&>*]:min-w-0`, and `<main>` has `overflow-x-clip`. After any layout change, check the page at 390px wide.
 - **Bento backgrounds are absolutely positioned.** They overlap a card's icon and title if they're too tall. Rows are `26rem` below `lg` and `22rem` at `lg` and up.
+- **Never hide the hero behind JavaScript.** The hero used Magic UI's `BlurFade`, which renders at `opacity: 0` until React hydrates, and that pushed mobile LCP to ~13s. Every section now uses `Reveal` (`reveal.tsx`), one CSS entrance: it plays on first paint by default, and with `inView` it waits until scrolled to. Use it for entrances so all sections move the same way, and never put `inView` on anything in the first screen.
 - **Static export only.** Do not add server features (route handlers, `next/image` optimization, ISR, middleware). `images.unoptimized` is on, and `<img>` is fine.
 
 ## Workflow

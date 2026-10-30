@@ -1,4 +1,4 @@
-import { BlurFade } from "@/components/ui/blur-fade";
+import { Reveal } from "./reveal";
 import { Iphone } from "@/components/ui/iphone";
 
 import { SectionHeading } from "./section-heading";
@@ -24,7 +24,7 @@ export function Screens() {
         </SectionHeading>
         <div className="mt-16 flex items-end justify-center gap-4 sm:gap-8">
           {PHONES.map((p, i) => (
-            <BlurFade
+            <Reveal
               key={p.name}
               inView
               delay={0.1 + i * 0.12}
@@ -43,7 +43,7 @@ export function Screens() {
               <p className="mt-5 text-center text-sm font-medium text-muted-foreground">
                 {p.label}
               </p>
-            </BlurFade>
+            </Reveal>
           ))}
         </div>
       </div>

@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-import { BlurFade } from "@/components/ui/blur-fade";
+import { Reveal } from "./reveal";
 import { cn } from "@/lib/utils";
 
 export function SectionHeading({
@@ -15,7 +15,7 @@ export function SectionHeading({
   className?: string;
 }) {
   return (
-    <BlurFade inView className={cn("mx-auto max-w-2xl text-center", className)}>
+    <Reveal inView className={cn("mx-auto max-w-2xl text-center", className)}>
       <p className="text-sm font-semibold tracking-wider text-brand uppercase">
         {eyebrow}
       </p>
@@ -27,6 +27,6 @@ export function SectionHeading({
           {children}
         </p>
       ) : null}
-    </BlurFade>
+    </Reveal>
   );
 }

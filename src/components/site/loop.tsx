@@ -12,7 +12,7 @@ import {
 import { forwardRef, useRef, type ReactNode } from "react";
 
 import { AnimatedBeam } from "@/components/ui/animated-beam";
-import { BlurFade } from "@/components/ui/blur-fade";
+import { Reveal } from "./reveal";
 import { cn } from "@/lib/utils";
 
 import { LogoMark } from "./logo";
@@ -97,7 +97,7 @@ export function Loop() {
           the eggs in your fridge are the eggs in tonight’s shakshuka.
         </SectionHeading>
 
-        <BlurFade inView delay={0.1}>
+        <Reveal inView delay={0.1}>
           <div
             ref={containerRef}
             className="relative mx-auto mt-16 flex h-[440px] w-full max-w-3xl items-center justify-between rounded-3xl border bg-card/60 px-6 py-8 shadow-sm sm:h-[460px] sm:px-14"
@@ -141,11 +141,11 @@ export function Loop() {
             <AnimatedBeam {...beam} fromRef={hubRef} toRef={recipeRef} curvature={15} delay={1.2} />
             <AnimatedBeam {...beam} fromRef={hubRef} toRef={mealRef} curvature={50} delay={1.7} />
           </div>
-        </BlurFade>
+        </Reveal>
 
         <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {STEPS.map((s, i) => (
-            <BlurFade key={s.title} inView delay={0.1 + i * 0.08}>
+            <Reveal key={s.title} inView delay={0.1 + i * 0.08}>
               <div className="h-full rounded-2xl border bg-card p-6 shadow-sm">
                 <div className="flex items-center gap-3">
                   <span className="flex size-9 items-center justify-center rounded-full bg-brand-soft text-brand">
@@ -160,7 +160,7 @@ export function Loop() {
                   {s.body}
                 </p>
               </div>
-            </BlurFade>
+            </Reveal>
           ))}
         </div>
       </div>

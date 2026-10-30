@@ -1,6 +1,6 @@
 import { ArrowRight } from "lucide-react";
 
-import { BlurFade } from "@/components/ui/blur-fade";
+import { Reveal } from "./reveal";
 import { DotPattern } from "@/components/ui/dot-pattern";
 import { OrbitingCircles } from "@/components/ui/orbiting-circles";
 import { ShimmerButton } from "@/components/ui/shimmer-button";
@@ -14,7 +14,7 @@ const FOODS = ["🥚", "🥬", "🍅", "🥑", "🧀", "🍌", "🥕", "🍋"];
 export function FinalCta() {
   return (
     <section className="px-5 py-16">
-      <BlurFade inView>
+      <Reveal inView>
         <div className="relative mx-auto grid max-w-6xl items-center overflow-hidden rounded-[2rem] border bg-brand-soft px-8 py-16 sm:px-14 lg:grid-cols-2">
           <DotPattern className="text-brand/20 [mask-image:radial-gradient(500px_circle_at_80%_50%,white,transparent)]" />
           <div className="relative">
@@ -65,7 +65,7 @@ export function FinalCta() {
             </OrbitingCircles>
           </div>
         </div>
-      </BlurFade>
+      </Reveal>
     </section>
   );
 }

@@ -1,4 +1,4 @@
-import { BlurFade } from "@/components/ui/blur-fade";
+import { Reveal } from "./reveal";
 import { Marquee } from "@/components/ui/marquee";
 
 import { LogoMark } from "./logo";
@@ -32,7 +32,7 @@ export function Story() {
   return (
     <section id="story" className="relative py-24 sm:py-32">
       <div className="mx-auto grid max-w-6xl items-center gap-14 px-5 lg:grid-cols-2 [&>*]:min-w-0">
-        <BlurFade inView>
+        <Reveal inView>
           <p className="text-sm font-semibold tracking-wider text-brand uppercase">
             Why it exists
           </p>
@@ -68,9 +68,9 @@ export function Story() {
               </p>
             </div>
           </div>
-        </BlurFade>
+        </Reveal>
 
-        <BlurFade inView delay={0.15}>
+        <Reveal inView delay={0.15}>
           <div className="relative overflow-hidden rounded-3xl border bg-muted/40 py-10">
             <p className="px-8 text-center text-sm font-medium text-muted-foreground">
               What Foodable replaced in our house
@@ -100,7 +100,7 @@ export function Story() {
             <div className="pointer-events-none absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-background" />
             <div className="pointer-events-none absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-background" />
           </div>
-        </BlurFade>
+        </Reveal>
       </div>
     </section>
   );

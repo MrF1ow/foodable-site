@@ -1,6 +1,6 @@
 import { Plus } from "lucide-react";
 
-import { BlurFade } from "@/components/ui/blur-fade";
+import { Reveal } from "./reveal";
 
 import { SectionHeading } from "./section-heading";
 
@@ -42,7 +42,7 @@ export function Faq() {
         <SectionHeading eyebrow="FAQ" title="Questions, answered." />
         <div className="mt-12 space-y-3">
           {FAQ.map((f, i) => (
-            <BlurFade key={f.q} inView delay={0.05 * i}>
+            <Reveal key={f.q} inView delay={0.05 * i}>
               <details className="group rounded-2xl border bg-card px-6 shadow-sm open:shadow-md">
                 <summary className="flex cursor-pointer list-none items-center justify-between gap-4 py-5 font-heading text-lg font-semibold [&::-webkit-details-marker]:hidden">
                   {f.q}
@@ -52,7 +52,7 @@ export function Faq() {
                   {f.a}
                 </p>
               </details>
-            </BlurFade>
+            </Reveal>
           ))}
         </div>
       </div>
