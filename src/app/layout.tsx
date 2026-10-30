@@ -33,6 +33,18 @@ export const metadata: Metadata = {
     description:
       "One kitchen, one app. Free, open source and hosted by you.",
     type: "website",
+    url: "/",
+    images: [
+      {
+        url: "/og.png",
+        width: 1200,
+        height: 630,
+        alt: "Foodable: Making food more doable.",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
   },
 };
 

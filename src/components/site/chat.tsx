@@ -36,7 +36,9 @@ const CLIENTS = ["Claude", "ChatGPT", "VS Code", "Goose", "Grok", "any MCP clien
 export function Chat() {
   return (
     <section className="relative overflow-hidden py-24 sm:py-32">
-      <div className="pointer-events-none absolute top-1/2 left-1/2 h-[500px] w-[700px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-brand/10 blur-[120px]" />
+      {/* A gradient rather than a blurred blob: it fades out inside the
+          section, so overflow-hidden never cuts it off flat. */}
+      <div className="pointer-events-none absolute inset-y-0 left-1/2 w-[1100px] max-w-full -translate-x-1/2 bg-[radial-gradient(closest-side,color-mix(in_oklab,var(--brand)_13%,transparent),color-mix(in_oklab,var(--brand)_7%,transparent)_35%,color-mix(in_oklab,var(--brand)_2.5%,transparent)_65%,transparent)]" />
       <div className="relative mx-auto grid max-w-6xl items-center gap-14 px-5 lg:grid-cols-[1fr_1.1fr] [&>*]:min-w-0">
         <BlurFade inView>
           <p className="text-sm font-semibold tracking-wider text-brand uppercase">
