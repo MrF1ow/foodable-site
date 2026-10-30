@@ -82,7 +82,7 @@ export function Hero() {
         </BlurFade>
 
         <BlurFade delay={0.5} inView className="relative mt-16 w-full max-w-5xl">
-          <div className="relative rounded-2xl">
+          <div className="relative">
             <Themed
               light={
                 <Safari
@@ -99,13 +99,22 @@ export function Hero() {
                 />
               }
             />
-            <BorderBeam
-              size={220}
-              duration={9}
-              colorFrom="#28cf8b"
-              colorTo="#b6f0d6"
-              className="rounded-[12px]"
-            />
+            {/* Matches the Safari SVG: the frame is 1202×753 in a 1203-wide
+                viewBox with 12-unit corners, so size it in percentages. */}
+            <div
+              className="pointer-events-none absolute inset-y-0 left-0"
+              style={{
+                width: `${(1202 / 1203) * 100}%`,
+                borderRadius: `${(12 / 1202) * 100}% / ${(12 / 753) * 100}%`,
+              }}
+            >
+              <BorderBeam
+                size={220}
+                duration={9}
+                colorFrom="#28cf8b"
+                colorTo="#b6f0d6"
+              />
+            </div>
           </div>
           <div className="absolute -right-4 -bottom-10 hidden w-[200px] rotate-3 drop-shadow-2xl md:block lg:-right-12 lg:w-[230px]">
             <Themed
