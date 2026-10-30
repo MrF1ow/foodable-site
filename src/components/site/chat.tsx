@@ -3,7 +3,7 @@
 import { Check, Wrench } from "lucide-react";
 import { motion } from "motion/react";
 
-import { BlurFade } from "@/components/ui/blur-fade";
+import { Reveal } from "./reveal";
 import { NumberTicker } from "@/components/ui/number-ticker";
 import { WordRotate } from "@/components/ui/word-rotate";
 
@@ -40,7 +40,7 @@ export function Chat() {
           section, so overflow-hidden never cuts it off flat. */}
       <div className="pointer-events-none absolute inset-y-0 left-1/2 w-[1100px] max-w-full -translate-x-1/2 bg-[radial-gradient(closest-side,color-mix(in_oklab,var(--brand)_13%,transparent),color-mix(in_oklab,var(--brand)_7%,transparent)_35%,color-mix(in_oklab,var(--brand)_2.5%,transparent)_65%,transparent)]" />
       <div className="relative mx-auto grid max-w-6xl items-center gap-14 px-5 lg:grid-cols-[1fr_1.1fr] [&>*]:min-w-0">
-        <BlurFade inView>
+        <Reveal inView>
           <p className="text-sm font-semibold tracking-wider text-brand uppercase">
             Just ask
           </p>
@@ -79,9 +79,9 @@ export function Chat() {
               </p>
             </div>
           </div>
-        </BlurFade>
+        </Reveal>
 
-        <BlurFade inView delay={0.1}>
+        <Reveal inView delay={0.1}>
           <div className="rounded-3xl border bg-card/80 p-4 shadow-2xl shadow-black/5 backdrop-blur sm:p-6">
             <div className="mb-4 flex items-center gap-2 border-b pb-4">
               <span className="size-3 rounded-full bg-[#ff5f57]" />
@@ -140,7 +140,7 @@ export function Chat() {
               ))}
             </motion.ul>
           </div>
-        </BlurFade>
+        </Reveal>
       </div>
     </section>
   );

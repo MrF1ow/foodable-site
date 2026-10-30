@@ -2,7 +2,6 @@ import { ArrowRight, Heart } from "lucide-react";
 
 import { AnimatedShinyText } from "@/components/ui/animated-shiny-text";
 import { AuroraText } from "@/components/ui/aurora-text";
-import { BlurFade } from "@/components/ui/blur-fade";
 import { BorderBeam } from "@/components/ui/border-beam";
 import { DotPattern } from "@/components/ui/dot-pattern";
 import { Iphone } from "@/components/ui/iphone";
@@ -12,6 +11,7 @@ import { REPO_URL } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 import { GithubIcon } from "./github-icon";
+import { Reveal } from "./reveal";
 import { shot, Themed } from "./themed-shot";
 
 const GREENS = ["#28cf8b", "#7ee2b8", "#14a86c", "#b6f0d6"];
@@ -19,6 +19,22 @@ const GREENS = ["#28cf8b", "#7ee2b8", "#14a86c", "#b6f0d6"];
 export function Hero() {
   return (
     <section id="top" className="relative overflow-hidden pt-32 pb-16 sm:pt-40">
+      {/* The Safari screenshot is the LCP element. React hoists these into
+          <head>; `media` fetches only the twin for the system theme. */}
+      <link
+        rel="preload"
+        as="image"
+        href={shot("nutrition", "light")}
+        media="(prefers-color-scheme: light)"
+        fetchPriority="high"
+      />
+      <link
+        rel="preload"
+        as="image"
+        href={shot("nutrition", "dark")}
+        media="(prefers-color-scheme: dark)"
+        fetchPriority="high"
+      />
       <DotPattern
         className={cn(
           "text-brand/25 [mask-image:radial-gradient(700px_circle_at_50%_0%,white,transparent)]",
@@ -27,7 +43,7 @@ export function Hero() {
       <div className="pointer-events-none absolute inset-x-0 -top-40 mx-auto h-[480px] max-w-3xl rounded-full bg-brand/20 blur-[120px]" />
 
       <div className="relative mx-auto flex max-w-6xl flex-col items-center px-5 text-center">
-        <BlurFade delay={0.05} inView>
+        <Reveal delay={0.05}>
           <a
             href={REPO_URL}
             className="group inline-flex items-center rounded-full border bg-card/70 text-sm shadow-sm backdrop-blur transition-colors hover:bg-card"
@@ -38,24 +54,24 @@ export function Hero() {
               <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" />
             </AnimatedShinyText>
           </a>
-        </BlurFade>
+        </Reveal>
 
-        <BlurFade delay={0.15} inView>
+        <Reveal delay={0.15}>
           <h1 className="mt-6 max-w-4xl text-5xl leading-[1.05] font-bold text-balance sm:text-6xl lg:text-7xl">
             Making food more <AuroraText colors={GREENS}>doable.</AuroraText>
           </h1>
-        </BlurFade>
+        </Reveal>
 
-        <BlurFade delay={0.25} inView>
+        <Reveal delay={0.25}>
           <p className="mt-6 max-w-2xl text-lg text-balance text-muted-foreground sm:text-xl">
             One kitchen, one app. Foodable keeps your fridge, grocery list,
             recipes and nutrition together, and lets you run it all by just
             talking to your AI assistant. Built for your household, hosted by
             you.
           </p>
-        </BlurFade>
+        </Reveal>
 
-        <BlurFade delay={0.35} inView>
+        <Reveal delay={0.35}>
           <div className="mt-9 flex flex-col items-center gap-3 sm:flex-row">
             <a href="#self-host">
               <ShimmerButton
@@ -79,9 +95,9 @@ export function Hero() {
             No subscriptions · No ads · No tracking · Your data stays in your
             database
           </p>
-        </BlurFade>
+        </Reveal>
 
-        <BlurFade delay={0.5} inView className="relative mt-16 w-full max-w-5xl">
+        <Reveal delay={0.5} className="relative mt-16 w-full max-w-5xl">
           <div className="relative">
             <Themed
               light={
@@ -128,7 +144,7 @@ export function Hero() {
               dark={<Iphone src={shot("fridge", "dark", true)} />}
             />
           </div>
-        </BlurFade>
+        </Reveal>
       </div>
     </section>
   );
