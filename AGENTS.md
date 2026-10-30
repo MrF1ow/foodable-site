@@ -25,7 +25,7 @@ There is no formatter yet. Do not add Prettier: the owner wants Bun-only tooling
 - `src/app/page.tsx` puts the sections together in order: Nav, Hero, Story, Loop, Chat, Features, Screens, SelfHost, Faq, FinalCta, Footer.
 - `src/components/site/` holds one file per section, plus the small helpers `logo.tsx`, `section-heading.tsx`, `themed-shot.tsx` and `github-icon.tsx`.
 - `src/components/ui/` holds vendored shadcn / Magic UI components, kept as the registry ships them and excluded from lint. The one local change: `safari.tsx` and `iphone.tsx` add a per-instance `useId()` suffix to their SVG mask and clip ids. Keep that change if you re-pull them (see Gotchas).
-- `src/lib/site.ts` holds the repo, docs and upstream URLs. Link through these constants and never hardcode the URLs.
+- `src/lib/site.ts` holds the site, repo, docs and upstream URLs. Link through these constants and never hardcode the URLs.
 - `src/app/globals.css` holds the theme tokens.
 - `public/shots/` holds real app screenshots, `public/brand/` the logo SVGs.
 
@@ -76,7 +76,7 @@ Each image ships in a light and a dark version, swapped with `<Themed light={…
 - Branch from `main` and open a PR. Do not push straight to `main`. CI runs `bun install --frozen-lockfile`, `bun run lint` and `bun run build`.
 - Before calling a visual change done, look at it in light, dark and at 390px.
 - Keep the page to one route. Smaller pieces of copy belong in the FAQ, not on new pages.
-- Deploy is not set up yet. The `out/` folder works on any static host. If the site moves to a GitHub Pages project URL, it needs a `basePath`.
+- Deploy: Cloudflare Workers static assets, serving `out/` at https://foodable.xyz (`wrangler.jsonc`). Cloudflare builds from GitHub on every push to `main` (build `bun run build`, deploy `bunx wrangler deploy`, env `BUN_VERSION`). There is no Worker script; keep it that way. `public/_headers` sets cache headers.
 
 <!-- BEGIN:nextjs-agent-rules -->
 
