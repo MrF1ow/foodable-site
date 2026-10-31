@@ -59,7 +59,7 @@ bun run preview:app   # serves fixture pages on http://localhost:4787/<page>-<li
 Then capture each page with headless Chromium at device scale factor 2:
 
 - `nutrition-{light,dark}.png` at 1200×700 (the Safari frame's screen ratio).
-- `{fridge,grocery,recipe}-{light,dark}-mobile.png` at 390×844 (the iPhone frame's screen).
+- `{fridge,grocery,recipe}-{light,dark}-mobile.png` at 390×844 (the iPhone frame's screen), with iPhone safe areas: rewrite `env(safe-area-inset-top)` to `59px` and `env(safe-area-inset-bottom)` to `34px` in the served CSS (e.g. a Playwright route). Otherwise the header sits under the frame's Dynamic Island.
 
 Convert each capture to WebP before committing (PNGs are ~4× bigger and the hero shot is the page's LCP element):
 
