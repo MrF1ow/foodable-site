@@ -19,8 +19,8 @@ const NEEDS = [
   },
   {
     icon: Database,
-    title: "A Supabase project",
-    body: "The free tier is plenty for a household. It holds your data and your logins.",
+    title: "A Postgres database",
+    body: "Any Postgres works. It holds your data and your logins, so there’s no separate auth service to run.",
   },
   {
     icon: Server,
@@ -55,7 +55,7 @@ export function SelfHost() {
               <AnimatedSpan className="text-muted-foreground">
                 ✔ OAuth client and session secret ready, paste into .env
               </AnimatedSpan>
-              <TypingAnimation>$ supabase db push</TypingAnimation>
+              <TypingAnimation>$ bun run db:migrate</TypingAnimation>
               <AnimatedSpan className="text-muted-foreground">
                 ✔ Migrations applied
               </AnimatedSpan>
