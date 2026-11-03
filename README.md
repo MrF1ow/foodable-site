@@ -36,4 +36,4 @@ chromium --headless=new --hide-scrollbars --force-device-scale-factor=2 \
   http://localhost:4787/nutrition-light.html
 ```
 
-Brand assets in `public/brand/`, `src/app/favicon.ico` and `public/apple-touch-icon.png` are copied from the main repo (`bun run gen:icons` there). Accent is the logo green `#28cf8b`; text on it is `#062c1c`.
+Brand assets in `public/brand/`, `public/favicon.ico` and `public/apple-touch-icon.png` are copied from the main repo (`bun run gen:icons` there). Accent is the logo green `#28cf8b`; text on it is `#062c1c`.
