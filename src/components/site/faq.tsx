@@ -19,11 +19,11 @@ const FAQ = [
   },
   {
     q: "Where does my data live?",
-    a: "In your own Supabase project, on a server you run. Nothing is sent to us. You can export everything as plain CSV files whenever you like.",
+    a: "In your own Postgres database, on a server you run. Nothing is sent to us. You can export everything as plain CSV files whenever you like.",
   },
   {
     q: "How technical do I need to be?",
-    a: "Comfortable with a terminal, environment variables and a database dashboard. If you’ve deployed a side project before, you’ll be fine. If not, it’s a fun first one.",
+    a: "Comfortable with a terminal, environment variables and a Postgres connection string. If you’ve deployed a side project before, you’ll be fine. If not, it’s a fun first one.",
   },
   {
     q: "Can more than one person use it?",
