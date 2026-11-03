@@ -1,4 +1,4 @@
-import { BookOpen, Database, Server, Zap } from "lucide-react";
+import { BookOpen, Bot, Database, Server, Zap } from "lucide-react";
 
 import { Reveal } from "./reveal";
 import { MagicCard } from "@/components/ui/magic-card";
@@ -8,6 +8,8 @@ import {
   TypingAnimation,
 } from "@/components/ui/terminal";
 import { DOCS_URL } from "@/lib/site";
+
+import { AgentPrompt } from "./agent-prompt";
 
 import { SectionHeading } from "./section-heading";
 
@@ -39,10 +41,36 @@ export function SelfHost() {
         >
           Foodable isn’t a service you sign up for. It’s software you run for
           your own household, so there’s nobody in the middle and nothing to
-          pay us. If you’re comfortable in a terminal, you’ve got this.
+          pay us. You don’t have to do it by hand: give it to your agent.
         </SectionHeading>
 
-        <div className="mt-14 grid items-start gap-8 lg:grid-cols-[1.15fr_1fr] [&>*]:min-w-0">
+        <Reveal inView delay={0.05} className="mx-auto mt-12 max-w-3xl">
+          <div className="rounded-2xl border bg-brand-soft p-6 sm:p-8">
+            <div className="flex items-center gap-3">
+              <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-brand text-on-brand">
+                <Bot className="size-5" />
+              </span>
+              <h3 className="text-xl font-semibold">Give it to your agent</h3>
+            </div>
+            <p className="mt-3 text-muted-foreground">
+              Foodable ships a setup skill. Paste this into Claude Code, Codex
+              or any agent that can run commands. It asks what accounts you
+              have, runs the commands it can, and tells you what to click for
+              the rest.
+            </p>
+            <div className="mt-5">
+              <AgentPrompt />
+            </div>
+          </div>
+        </Reveal>
+
+        <Reveal inView delay={0.05}>
+          <p className="mt-14 text-center text-sm font-medium text-muted-foreground">
+            Rather do it yourself? It’s a handful of commands.
+          </p>
+        </Reveal>
+
+        <div className="mt-6 grid items-start gap-8 lg:grid-cols-[1.15fr_1fr] [&>*]:min-w-0">
           <Reveal inView delay={0.1}>
             <Terminal className="max-h-none overflow-x-auto w-full max-w-none bg-card shadow-xl" sequence startOnView>
               <TypingAnimation>$ git clone https://github.com/MrF1ow/foodable</TypingAnimation>
