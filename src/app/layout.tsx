@@ -25,7 +25,10 @@ export const metadata: Metadata = {
   description:
     "Fridge, groceries, recipes and nutrition in one free, open-source app you host yourself. Run it from the web or just talk to your AI assistant.",
   icons: {
-    icon: "/favicon.ico",
+    icon: [
+      { url: "/favicon.ico", sizes: "32x32" },
+      { url: "/brand/icon.svg", type: "image/svg+xml" },
+    ],
     apple: "/apple-touch-icon.png",
   },
   openGraph: {
