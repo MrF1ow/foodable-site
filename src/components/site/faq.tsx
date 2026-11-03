@@ -1,10 +1,13 @@
 import { Plus } from "lucide-react";
+import type { ReactNode } from "react";
+
+import { SETUP_SKILL_URL } from "@/lib/site";
 
 import { Reveal } from "./reveal";
 
 import { SectionHeading } from "./section-heading";
 
-const FAQ = [
+const FAQ: { q: string; a: ReactNode }[] = [
   {
     q: "Is it really free?",
     a: "Yes. Foodable is MIT-licensed open source. There’s no paid tier, no ads and no account with us. The only costs are whatever you pay to host it, which can be nothing if you run it at home.",
@@ -23,7 +26,19 @@ const FAQ = [
   },
   {
     q: "How technical do I need to be?",
-    a: "Comfortable with a terminal, environment variables and a Postgres connection string. If you’ve deployed a side project before, you’ll be fine. If not, it’s a fun first one.",
+    a: (
+      <>
+        Not very. Give it to your agent: point Claude Code, Codex or any agent
+        that can run commands at the{" "}
+        <a href={SETUP_SKILL_URL} className="text-brand hover:underline">
+          setup skill
+        </a>{" "}
+        and it walks you through accounts, the database and going live, one
+        step at a time. You click the buttons that need you. If you’d rather
+        do it by hand, it’s a terminal, a few environment variables and a
+        Postgres connection string.
+      </>
+    ),
   },
   {
     q: "Can more than one person use it?",

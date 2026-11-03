@@ -23,7 +23,7 @@ There is no formatter yet. Do not add Prettier: the owner wants Bun-only tooling
 ## Layout
 
 - `src/app/page.tsx` puts the sections together in order: Nav, Hero, Story, Loop, Chat, Features, Screens, SelfHost, Faq, FinalCta, Footer.
-- `src/components/site/` holds one file per section, plus the small helpers `logo.tsx`, `section-heading.tsx`, `themed-shot.tsx`, `reveal.tsx` and `github-icon.tsx`.
+- `src/components/site/` holds one file per section, plus the small helpers `logo.tsx`, `section-heading.tsx`, `themed-shot.tsx`, `reveal.tsx`, `agent-prompt.tsx` and `github-icon.tsx`.
 - `src/components/ui/` holds vendored shadcn / Magic UI components, kept as the registry ships them and excluded from lint. The one local change: `safari.tsx` and `iphone.tsx` add a per-instance `useId()` suffix to their SVG mask and clip ids. Keep that change if you re-pull them (see Gotchas).
 - `src/lib/site.ts` holds the site, repo, docs and upstream URLs. Link through these constants and never hardcode the URLs.
 - `src/app/globals.css` holds the theme tokens.
