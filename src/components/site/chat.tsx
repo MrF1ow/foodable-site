@@ -1,147 +1,332 @@
 "use client";
 
-import { Check, Wrench } from "lucide-react";
-import { motion } from "motion/react";
+import { ArrowUp, Check } from "lucide-react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+
+import { NumberTicker } from "@/components/ui/number-ticker";
+import { cn } from "@/lib/utils";
 
 import { Reveal } from "./reveal";
-import { NumberTicker } from "@/components/ui/number-ticker";
-import { WordRotate } from "@/components/ui/word-rotate";
+import { shot, Themed } from "./themed-shot";
 
-import { LogoMark } from "./logo";
-
-type Msg =
-  | { from: "you"; text: string }
-  | { from: "ai"; text: string; tools: string[] };
-
-const CONVO: Msg[] = [
+// Tool names are real tools in MrF1ow/foodable (src/mcp/tools-list.snapshot.json)
+// and `card` is a file in public/shots/chat/.
+const SCENES = [
   {
-    from: "you",
-    text: "We’re out of milk. Also, what can I make tonight with what’s in the fridge?",
+    prompt: "We're out of milk, add it to the Costco list.",
+    tool: "add_grocery_line",
+    card: "grocery",
+    label: "Add milk to Costco",
+    alt: "A Foodable grocery card showing milk added to the Costco list",
   },
   {
-    from: "ai",
-    tools: ["add_grocery_line", "list_expiring", "list_recipes"],
-    text: "Milk is on the Safeway list. Your eggs and spinach expire this week, so shakshuka is a good fit. It serves 4. Want me to cook it?",
+    prompt: "What's in the fridge that I should use?",
+    tool: "get_fridge",
+    card: "fridge",
+    label: "What should I use?",
+    alt: "A Foodable fridge card listing what to use first",
   },
-  { from: "you", text: "Yes! I’ll have one and a half portions." },
   {
-    from: "ai",
-    tools: ["cook_recipe", "get_goal_progress"],
-    text: "Done. 6 eggs came out of the fridge and 480 kcal is logged for you. You’re 165 kcal under today’s goal. 🎉",
+    prompt: "I had the chicken rice bowl for lunch.",
+    tool: "log_meal",
+    card: "logmeal",
+    label: "Log my lunch",
+    alt: "A Foodable card confirming the chicken rice bowl was logged",
   },
-];
+  {
+    prompt: "How am I doing today?",
+    tool: "get_nutrition_summary",
+    card: "summary",
+    label: "How am I doing?",
+    alt: "A Foodable card summarising today's nutrition",
+  },
+] as const;
 
-const CLIENTS = ["Claude", "ChatGPT", "VS Code", "Goose", "Grok", "any MCP client"];
+const CYCLE_MS = 6500;
+const REDUCED = "(prefers-reduced-motion: reduce)";
+
+const KEYFRAMES = [
+  "@keyframes fc-pop{from{opacity:0;transform:translateY(8px) scale(.97)}}",
+  "@keyframes fc-rise{from{opacity:.0001;transform:translateY(10px)}}",
+  "@keyframes fc-think{0%{opacity:0}15%,85%{opacity:1}100%{opacity:0}}",
+  "@keyframes fc-blink{to{opacity:.25}}",
+  "@keyframes fc-prog{from{transform:scaleX(0)}}",
+].join("");
+
+function subscribeReducedMotion(onChange: () => void) {
+  const mq = window.matchMedia(REDUCED);
+  mq.addEventListener("change", onChange);
+  return () => mq.removeEventListener("change", onChange);
+}
+
+function useReducedMotion() {
+  return useSyncExternalStore(
+    subscribeReducedMotion,
+    () => window.matchMedia(REDUCED).matches,
+    () => false,
+  );
+}
+
+const noop = () => () => {};
+
+function useHydrated() {
+  return useSyncExternalStore(
+    noop,
+    () => true,
+    () => false,
+  );
+}
+
+function Fact({
+  value,
+  label,
+  count,
+}: {
+  value: number;
+  label: string;
+  count: boolean;
+}) {
+  return (
+    <div>
+      <b className="block font-heading text-[44px] leading-[1.15] font-bold tracking-[-0.02em]">
+        {count ? (
+          <NumberTicker
+            value={value}
+            className="tracking-[-0.02em] text-foreground [font-variant-numeric:normal]"
+          />
+        ) : (
+          value
+        )}
+      </b>
+      <span className="text-[13px] text-faint">{label}</span>
+    </div>
+  );
+}
 
 export function Chat() {
+  const [index, setIndex] = useState(0);
+  // Bumped on every jump so the active scene and its progress bar replay.
+  const [run, setRun] = useState(0);
+  const [started, setStarted] = useState(false);
+  const windowRef = useRef<HTMLDivElement>(null);
+  const reduced = useReducedMotion();
+  const hydrated = useHydrated();
+
+  // Start the cycle the first time the window is mostly in view.
+  useEffect(() => {
+    const el = windowRef.current;
+    if (started || !el) return;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setStarted(true);
+          io.disconnect();
+        }
+      },
+      { threshold: 0.3 },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [started]);
+
+  // One timer for the active scene. Any jump changes `index` or `run`, which
+  // restarts it.
+  useEffect(() => {
+    if (!started || reduced) return;
+    const t = setTimeout(() => {
+      setIndex((i) => (i + 1) % SCENES.length);
+      setRun((r) => r + 1);
+    }, CYCLE_MS);
+    return () => clearTimeout(t);
+  }, [started, reduced, index, run]);
+
+  function jump(to: number) {
+    setIndex(to);
+    setRun((r) => r + 1);
+    setStarted(true);
+  }
+
   return (
-    <section className="relative overflow-hidden py-24 sm:py-32">
-      {/* A gradient rather than a blurred blob: it fades out inside the
-          section, so overflow-hidden never cuts it off flat. */}
-      <div className="pointer-events-none absolute inset-y-0 left-1/2 w-[1100px] max-w-full -translate-x-1/2 bg-[radial-gradient(closest-side,color-mix(in_oklab,var(--brand)_13%,transparent),color-mix(in_oklab,var(--brand)_7%,transparent)_35%,color-mix(in_oklab,var(--brand)_2.5%,transparent)_65%,transparent)]" />
-      <div className="relative mx-auto grid max-w-6xl items-center gap-14 px-5 lg:grid-cols-[1fr_1.1fr] [&>*]:min-w-0">
+    <section
+      id="chat"
+      className="relative border-t border-line py-16 md:py-24"
+    >
+      <style dangerouslySetInnerHTML={{ __html: KEYFRAMES }} />
+      <div className="mx-auto grid max-w-6xl items-center gap-7 px-4 sm:px-5 lg:grid-cols-[1fr_470px] lg:gap-[72px] [&>*]:min-w-0">
         <Reveal inView>
-          <p className="text-sm font-semibold tracking-wider text-brand uppercase">
-            Just ask
-          </p>
-          <h2 className="mt-3 text-4xl font-bold text-balance sm:text-5xl">
-            Your kitchen, one sentence away.
+          <span className="text-[11px] font-medium tracking-[0.12em] text-faint uppercase">
+            In your assistant
+          </span>
+          <h2 className="mt-3 max-w-[16ch] text-[34px] leading-[1.05] font-bold text-balance md:text-[52px]">
+            Say it. It&apos;s done.
           </h2>
-          <p className="mt-6 text-lg text-muted-foreground">
-            Foodable speaks MCP, the open standard AI assistants use to work
-            with real tools. Connect it once and just talk: add to the list,
-            check the fridge, cook dinner, log lunch. No forms, no tapping
-            through menus.
+          <p className="mt-4 max-w-[36ch] text-lg text-muted-foreground">
+            Connect Claude, Grok or any MCP client. It reads the fridge, fills
+            the list and logs dinner, and answers with Foodable&apos;s own
+            cards, in light or dark to match your chat.
           </p>
-          <div className="mt-8 flex flex-wrap items-baseline gap-x-2 text-lg">
-            <span className="text-muted-foreground">Works with</span>
-            <WordRotate
-              words={CLIENTS}
-              duration={2200}
-              className="font-heading text-2xl font-bold text-brand"
-            />
+          <div className="mt-7 flex gap-7">
+            <Fact value={73} label="tools" count={hydrated && !reduced} />
+            <Fact value={8} label="in-chat cards" count={hydrated && !reduced} />
           </div>
-          <div className="mt-8 grid max-w-sm grid-cols-2 gap-4">
-            <div className="rounded-2xl border bg-card p-5 shadow-sm">
-              <p className="font-heading text-4xl font-bold">
-                <NumberTicker value={67} className="text-foreground" />
-              </p>
-              <p className="mt-1 text-sm text-muted-foreground">
-                tools your assistant can use
-              </p>
-            </div>
-            <div className="rounded-2xl border bg-card p-5 shadow-sm">
-              <p className="font-heading text-4xl font-bold">
-                <NumberTicker value={8} className="text-foreground" />
-              </p>
-              <p className="mt-1 text-sm text-muted-foreground">
-                live cards that render right in the chat
-              </p>
-            </div>
+          <div className="mt-6 flex flex-wrap gap-2">
+            {["Claude", "Grok", "Any MCP client"].map((c) => (
+              <span
+                key={c}
+                className="inline-flex h-7 items-center rounded-full bg-raised px-3 text-[13px] text-muted-foreground"
+              >
+                {c}
+              </span>
+            ))}
           </div>
         </Reveal>
 
-        <Reveal inView delay={0.1}>
-          <div className="rounded-3xl border bg-card/80 p-4 shadow-2xl shadow-black/5 backdrop-blur sm:p-6">
-            <div className="mb-4 flex items-center gap-2 border-b pb-4">
-              <span className="size-3 rounded-full bg-[#ff5f57]" />
-              <span className="size-3 rounded-full bg-[#febc2e]" />
-              <span className="size-3 rounded-full bg-[#28c840]" />
-              <span className="ml-3 text-sm text-muted-foreground">
-                Your assistant · Foodable connected
-              </span>
-            </div>
-            <motion.ul
-              className="flex flex-col gap-4"
-              initial="hidden"
-              whileInView="show"
-              viewport={{ once: true, amount: 0.4 }}
-              variants={{ show: { transition: { staggerChildren: 0.9 } } }}
-            >
-              {CONVO.map((m, i) => (
-                <motion.li
-                  key={i}
-                  variants={{
-                    hidden: { opacity: 0, y: 16, scale: 0.97 },
-                    show: { opacity: 1, y: 0, scale: 1 },
-                  }}
-                  transition={{ type: "spring", stiffness: 260, damping: 26 }}
-                  className={m.from === "you" ? "flex justify-end" : "flex gap-3"}
-                >
-                  {m.from === "you" ? (
-                    <p className="max-w-[85%] rounded-2xl rounded-br-md bg-brand px-4 py-2.5 text-[15px] text-on-brand">
-                      {m.text}
-                    </p>
-                  ) : (
-                    <>
-                      <span className="mt-1 flex size-8 shrink-0 items-center justify-center rounded-full bg-brand-soft">
-                        <LogoMark className="size-4" />
-                      </span>
-                      <div className="max-w-[85%]">
-                        <div className="mb-2 flex flex-wrap gap-1.5">
-                          {m.tools.map((t) => (
-                            <span
-                              key={t}
-                              className="inline-flex items-center gap-1 rounded-md border bg-muted/60 px-2 py-0.5 font-mono text-[11px] text-muted-foreground"
-                            >
-                              <Wrench className="size-3" />
-                              {t}
-                              <Check className="size-3 text-brand" />
-                            </span>
-                          ))}
-                        </div>
-                        <p className="rounded-2xl rounded-tl-md bg-muted px-4 py-2.5 text-[15px]">
-                          {m.text}
-                        </p>
-                      </div>
-                    </>
-                  )}
-                </motion.li>
-              ))}
-            </motion.ul>
+        <div
+          ref={windowRef}
+          className="overflow-hidden rounded-[28px] border border-line bg-panel shadow-[0_40px_80px_-40px_rgba(0,0,0,0.45)]"
+        >
+          <div className="flex h-12 items-center gap-2 border-b border-line px-[18px] text-[13px] font-medium">
+            <span className="size-[7px] flex-none rounded-full bg-brand" />
+            Your assistant
+            <span className="font-normal text-faint">· Foodable connected</span>
+            <span className="flex-1" />
+            <span className="font-mono text-[11px] font-normal text-faint">
+              MCP
+            </span>
           </div>
-        </Reveal>
+
+          <div className="relative h-[440px] md:h-[452px]">
+            {SCENES.map((s, k) => {
+              const on = k === index;
+              return (
+                <div
+                  key={s.card}
+                  data-on={on}
+                  data-play={on && started}
+                  aria-hidden={!on}
+                  className="group/sc invisible absolute inset-0 opacity-0 [transition:opacity_0.3s,visibility_0s_0.3s] data-[on=true]:visible data-[on=true]:opacity-100 data-[on=true]:[transition:opacity_0.3s]"
+                >
+                  {/* Re-keyed on each jump so the staged entrance replays. */}
+                  <div
+                    key={on ? run : "idle"}
+                    className="flex h-full flex-col gap-3 px-5 py-[18px]"
+                  >
+                    <div
+                      className={cn(
+                        "max-w-[85%] self-end rounded-[18px_18px_6px_18px] bg-raised px-[15px] py-[9px] text-sm",
+                        "motion-safe:group-data-[play=true]/sc:[animation:fc-pop_0.4s_cubic-bezier(0.3,0.7,0.2,1.2)_both]",
+                      )}
+                    >
+                      {s.prompt}
+                    </div>
+                    <div
+                      aria-hidden="true"
+                      className={cn(
+                        "absolute top-[70px] left-5 flex h-3 items-center gap-1 opacity-0",
+                        "motion-safe:group-data-[play=true]/sc:[animation:fc-think_1.1s_ease_0.35s_both]",
+                      )}
+                    >
+                      {[0, 0.15, 0.3].map((d) => (
+                        <i
+                          key={d}
+                          className={cn(
+                            "size-1.5 rounded-full bg-faint",
+                            "motion-safe:group-data-[play=true]/sc:[animation:fc-blink_0.6s_ease-in-out_infinite_alternate]",
+                          )}
+                          style={{ animationDelay: `${d}s` }}
+                        />
+                      ))}
+                    </div>
+                    <div
+                      className={cn(
+                        "flex items-center gap-1.5 font-mono text-xs text-faint",
+                        "motion-safe:group-data-[play=true]/sc:[animation:fc-pop_0.35s_ease_1.2s_both]",
+                      )}
+                    >
+                      <Check className="size-3.5 text-brand-text" aria-hidden="true" />
+                      <span className="text-brand-text">{s.tool}</span>
+                    </div>
+                    <div
+                      className={cn(
+                        "mt-0.5 w-full max-w-[320px] md:w-[340px] md:max-w-none",
+                        "motion-safe:group-data-[play=true]/sc:[animation:fc-rise_0.5s_cubic-bezier(0.3,0.7,0.2,1)_1.4s_both]",
+                      )}
+                    >
+                      <Themed
+                        light={<Card name={s.card} theme="light" alt={s.alt} />}
+                        dark={<Card name={s.card} theme="dark" alt={s.alt} />}
+                      />
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          <div className="grid gap-2.5 border-t border-line px-3.5 pt-3 pb-3.5">
+            <div className="flex flex-wrap gap-1.5">
+              {SCENES.map((s, k) => {
+                const on = k === index;
+                return (
+                  <button
+                    key={s.card}
+                    type="button"
+                    aria-pressed={on}
+                    onClick={() => jump(k)}
+                    className={cn(
+                      "relative h-[30px] flex-none cursor-pointer overflow-hidden rounded-full border border-line px-3 text-[12.5px] text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand",
+                      on && "border-brand/55 text-foreground",
+                    )}
+                  >
+                    {s.label}
+                    {on ? (
+                      <span
+                        key={run}
+                        aria-hidden="true"
+                        className={cn(
+                          "absolute bottom-0 left-0 h-0.5 w-full origin-left bg-brand",
+                          "motion-safe:[animation:fc-prog_6.5s_linear_both]",
+                          !started && "[animation-play-state:paused]",
+                        )}
+                      />
+                    ) : null}
+                  </button>
+                );
+              })}
+            </div>
+            <div
+              aria-hidden="true"
+              className="flex items-center gap-2.5 rounded-full bg-raised py-[5px] pr-[5px] pl-4 text-sm text-faint"
+            >
+              <span className="flex-1">Ask Foodable anything…</span>
+              <i className="grid size-[30px] place-items-center rounded-full bg-brand text-on-brand">
+                <ArrowUp className="size-4" />
+              </i>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
+  );
+}
+
+function Card({
+  name,
+  theme,
+  alt,
+}: {
+  name: string;
+  theme: "light" | "dark";
+  alt: string;
+}) {
+  return (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src={shot("chat", name, theme)}
+      alt={alt}
+      loading="lazy"
+      decoding="async"
+      className="h-auto w-full rounded-[18px] border border-line"
+    />
   );
 }
