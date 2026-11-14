@@ -1,11 +1,8 @@
-import { Plus } from "lucide-react";
 import type { ReactNode } from "react";
 
 import { SETUP_SKILL_URL } from "@/lib/site";
 
 import { Reveal } from "./reveal";
-
-import { SectionHeading } from "./section-heading";
 
 const FAQ: { q: string; a: ReactNode }[] = [
   {
@@ -30,7 +27,7 @@ const FAQ: { q: string; a: ReactNode }[] = [
       <>
         Not very. Give it to your agent: point Claude Code, Codex or any agent
         that can run commands at the{" "}
-        <a href={SETUP_SKILL_URL} className="text-brand hover:underline">
+        <a href={SETUP_SKILL_URL} className="text-brand-text hover:underline">
           setup skill
         </a>{" "}
         and it walks you through accounts, the database and going live, one
@@ -52,24 +49,41 @@ const FAQ: { q: string; a: ReactNode }[] = [
 
 export function Faq() {
   return (
-    <section id="faq" className="py-24 sm:py-32">
-      <div className="mx-auto max-w-3xl px-5">
-        <SectionHeading eyebrow="FAQ" title="Questions, answered." />
-        <div className="mt-12 space-y-3">
+    <section id="faq" className="relative py-16 md:py-24">
+      <div className="mx-auto max-w-[820px] px-4 sm:px-5 md:px-10">
+        <Reveal inView>
+          <h2 className="mb-7 text-[34px] leading-[1.05] font-bold md:text-[52px]">
+            Questions
+          </h2>
+        </Reveal>
+        <Reveal inView delay={0.08}>
           {FAQ.map((f, i) => (
-            <Reveal key={f.q} inView delay={0.05 * i}>
-              <details className="group rounded-2xl border bg-card px-6 shadow-sm open:shadow-md">
-                <summary className="flex cursor-pointer list-none items-center justify-between gap-4 py-5 font-heading text-lg font-semibold [&::-webkit-details-marker]:hidden">
-                  {f.q}
-                  <Plus className="size-5 shrink-0 text-brand transition-transform duration-300 group-open:rotate-45" />
-                </summary>
-                <p className="pb-5 leading-relaxed text-muted-foreground">
-                  {f.a}
-                </p>
-              </details>
-            </Reveal>
+            <details
+              key={f.q}
+              open={i === 0}
+              className="group border-t border-line py-4"
+            >
+              <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-[15px] font-medium [&::-webkit-details-marker]:hidden">
+                {f.q}
+                <span
+                  aria-hidden
+                  className="text-xl leading-none text-faint group-open:hidden"
+                >
+                  +
+                </span>
+                <span
+                  aria-hidden
+                  className="hidden text-xl leading-none text-faint group-open:inline"
+                >
+                  –
+                </span>
+              </summary>
+              <p className="mt-2.5 max-w-[62ch] leading-relaxed text-muted-foreground">
+                {f.a}
+              </p>
+            </details>
           ))}
-        </div>
+        </Reveal>
       </div>
     </section>
   );

@@ -22,17 +22,18 @@ There is no formatter yet. Do not add Prettier: the owner wants Bun-only tooling
 
 ## Layout
 
-- `src/app/page.tsx` puts the sections together in order: Nav, Hero, Story, Loop, Chat, Features, Screens, SelfHost, Faq, FinalCta, Footer.
-- `src/components/site/` holds one file per section, plus the small helpers `logo.tsx`, `section-heading.tsx`, `themed-shot.tsx`, `reveal.tsx`, `agent-prompt.tsx` and `github-icon.tsx`.
+- `src/app/page.tsx` puts the sections together in order: Nav, Hero, Tour, Story, Loop, Chat, Features, SelfHost, Faq, FinalCta, Footer.
+- `src/components/site/` holds one file per section, plus the hero's clickable app window `app-demo.tsx` and the small helpers `logo.tsx`, `themed-shot.tsx`, `theme-toggle.tsx`, `reveal.tsx`, `agent-prompt.tsx` and `github-icon.tsx`.
 - `src/components/ui/` holds vendored shadcn / Magic UI components, kept as the registry ships them and excluded from lint. The one local change: `safari.tsx` and `iphone.tsx` add a per-instance `useId()` suffix to their SVG mask and clip ids. Keep that change if you re-pull them (see Gotchas).
 - `src/lib/site.ts` holds the site, repo, docs and upstream URLs. Link through these constants and never hardcode the URLs.
-- `src/app/globals.css` holds the theme tokens.
-- `public/shots/` holds real app screenshots, `public/brand/` the logo SVGs.
+- `src/app/globals.css` holds the theme tokens. Besides the shadcn ones it has the design tokens `--panel`, `--raised`, `--track`, `--line`, `--text-2`, `--text-3`, `--accent-text` and `--glass`, exposed as Tailwind colours (`bg-panel`, `bg-raised`, `bg-track`, `border-line`, `text-faint`, `text-brand-text`, `bg-glass`). `--text-2` is `text-muted-foreground`.
+- `public/shots/{app,phone,chat}/` hold the app screenshots, `public/brand/` the logo SVGs. The loose `public/shots/*.webp` files are the old shots, still used by sections not yet rebuilt (`legacyShot` in `themed-shot.tsx`).
 
 ## Brand and design
 
 - **Slogan:** "Foodable, Making Food More Doable". On the page it runs in sentence case: the hero headline is "Making food more *doable*.", and it is also the browser tab title, the link-preview title and the footer tagline. Keep the name/"doable" rhyme intact, and keep the slogan as the headline.
 - **One accent:** the logo green `#28cf8b` (`--brand`, also `--primary`), the same in light and dark. Text on a green fill is `#062c1c` (`--on-brand`, `text-on-brand`), never white. Soft green backgrounds use `--brand-soft`. Do not add other accent colors.
+- **Nutrition data colors:** `--protein`, `--carbs`, `--fat`, `--kcal`, `--water`, `--over` and `--warn` (`text-protein`, `bg-carbs`, …) are for nutrition data and status only: gauges, legend dots, bars, expiry labels. Never use them as a second accent.
 - **Fonts:** Bricolage Grotesque for headings (`font-heading`, applied to h1–h3 automatically) and Geist for body text.
 - **Themes:** `next-themes` toggles the class, and the default follows the system setting. Every section must look right in both themes, so check both.
 - **Logo:** use `LogoMark` / `Logo` from `logo.tsx`. The geometry matches `public/brand/mark.svg`, which is copied from the main repo's `src/brand.ts`. Never redraw it.
@@ -42,7 +43,7 @@ There is no formatter yet. Do not add Prettier: the owner wants Bun-only tooling
 
 Every claim on the page must be true of the main repo. Check there before changing any number or feature claim:
 
-- **Tool count (67)** comes from `src/mcp/tools-list.snapshot.json` in `MrF1ow/foodable`.
+- **Tool count (73)** comes from `src/mcp/tools-list.snapshot.json` in `MrF1ow/foodable`.
 - **In-chat card count (8)** is the client-reachable entries in `WIDGET_TEMPLATES` in its `src/widgets.ts`. `component-gallery` is dev-only and not counted.
 - **Tool names** in the Chat section's demo conversation must be real tools.
 - **Supported clients:** any MCP client over HTTP with OAuth. The owner uses Claude and Grok.
@@ -50,16 +51,21 @@ Every claim on the page must be true of the main repo. Check there before changi
 
 ## Screenshots
 
-`public/shots/*.webp` are real app pages rendered from fixture data, not mockups. To regenerate them, run this in the main repo:
+The app screenshots are 2× exports from the FigCraft design ("Foodable Design.figcraft", one page per screen). The owner's design folder has the file, the marketing mockup and the exports. They are not renders of the running app, because the main repo can't render the redesigned app pages yet. Once its new shell ships, recapture them from the real app with `bun run preview:app` (below).
+
+- `public/shots/app/{today,kitchen,groceries,recipes,trends}-{light,dark}.webp` are desktop app pages, with the sidebar cropped off.
+- `public/shots/phone/{today,fridge,grocery,recipes,trends}-{light,dark}.webp` are full-length phone screens at 2× (780 px wide), scrolled inside the iPhone frame.
+- `public/shots/chat/{grocery,fridge,logmeal,summary}-{light,dark}.webp` are the in-chat cards.
+
+Get the path with `shot(kind, name, theme)` from `themed-shot.tsx`. Each image ships in a light and a dark version, swapped with `<Themed light={…} dark={…} />`.
+
+To recapture from the real app, run this in the main repo:
 
 ```bash
 bun run preview:app   # serves fixture pages on http://localhost:4787/<page>-<light|dark>.html
 ```
 
-Then capture each page with headless Chromium at device scale factor 2:
-
-- `nutrition-{light,dark}.png` at 1200×700 (the Safari frame's screen ratio).
-- `{fridge,grocery,recipe}-{light,dark}-mobile.png` at 390×844 (the iPhone frame's screen), with iPhone safe areas: rewrite `env(safe-area-inset-top)` to `59px` and `env(safe-area-inset-bottom)` to `34px` in the served CSS (e.g. a Playwright route). Otherwise the header sits under the frame's Dynamic Island.
+Then capture each page with headless Chromium at device scale factor 2. Desktop pages go at the size of their frame. Phone pages go at 390×844, with iPhone safe areas: rewrite `env(safe-area-inset-top)` to `59px` and `env(safe-area-inset-bottom)` to `34px` in the served CSS (e.g. a Playwright route). Otherwise the header sits under the frame's Dynamic Island.
 
 Convert each capture to WebP before committing (PNGs are ~4× bigger and the hero shot is the page's LCP element):
 
@@ -67,15 +73,14 @@ Convert each capture to WebP before committing (PNGs are ~4× bigger and the her
 magick shot.png -quality 82 -define webp:method=6 shot.webp
 ```
 
-Each image ships in a light and a dark version, swapped with `<Themed light={…} dark={…} />`.
-
 ## Gotchas (each was a real bug here)
 
 - **Duplicate SVG ids blank the device frames.** The Safari and iPhone frames mask their screens by id. With several frames on the page, and the dark twins inside `display: none`, a shared id breaks every other frame and the screenshot disappears. That is why the ids use `useId()`.
 - **Swap themed content with wrapper divs.** Use `Themed` (wrapper divs) rather than `hidden dark:block` on a component that sets its own `display` (`inline-block`). Which class wins then depends on CSS order.
 - **Marquees inside grid items cause horizontal overflow on mobile.** A grid item's `min-width: auto` grows to the marquee's full width, and the page was once 4364px wide at 390px. Two-column section grids use `[&>*]:min-w-0`, and `<main>` has `overflow-x-clip`. After any layout change, check the page at 390px wide.
-- **Bento backgrounds are absolutely positioned.** They overlap a card's icon and title if they're too tall. Rows are `26rem` below `lg` and `22rem` at `lg` and up.
-- **Never hide the hero behind JavaScript.** The hero used Magic UI's `BlurFade`, which renders at `opacity: 0` until React hydrates, and that pushed mobile LCP to ~13s. Every section now uses `Reveal` (`reveal.tsx`), one CSS entrance: it plays on first paint by default, and with `inView` it waits until scrolled to. Use it for entrances so all sections move the same way, and never put `inView` on anything in the first screen.
+- **Bento visuals sit at the bottom of fixed-height rows.** Rows are 310px, 310px and 132px at `lg` and up and auto below it. A visual that grows taller than its row pushes into the card's title, so check the cards at 1024px and 1280px after changing one.
+- **Never hide the hero behind JavaScript.** The hero used Magic UI's `BlurFade`, which renders at `opacity: 0` until React hydrates, and that pushed mobile LCP to ~13s. Every section now uses `Reveal` (`reveal.tsx`), one CSS entrance: it plays on first paint by default, and with `inView` it waits until scrolled to. Use it for entrances so all sections move the same way, and never put `inView` on anything in the first screen. Without JavaScript an `inView` entrance would never un-pause, so a `<noscript>` style in `layout.tsx` turns off every `Reveal` animation (`data-reveal`).
+- **A ShimmerButton inside a link is two tab stops.** `ShimmerButton` renders a `<button>`, so wrapping it in `<a href>` (as every CTA here does) makes keyboard users tab twice. Give the inner button `tabIndex={-1}`; the link takes focus and Enter.
 - **Static export only.** Do not add server features (route handlers, `next/image` optimization, ISR, middleware). `images.unoptimized` is on, and `<img>` is fine.
 
 ## Workflow

@@ -1,8 +1,12 @@
 import type { ReactNode } from "react";
 
-/** Screenshots live in public/shots, one per theme, taken from the real app. */
-export function shot(name: string, theme: "light" | "dark", mobile = false) {
-  return `/shots/${name}-${theme}${mobile ? "-mobile" : ""}.webp`;
+/** Redesign screenshots: public/shots/<kind>/<name>-<theme>.webp. */
+export function shot(
+  kind: "app" | "phone" | "chat",
+  name: string,
+  theme: "light" | "dark",
+) {
+  return `/shots/${kind}/${name}-${theme}.webp`;
 }
 
 /** Shows `light` in light mode and `dark` in dark mode. */

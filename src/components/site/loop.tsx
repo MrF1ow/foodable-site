@@ -1,165 +1,86 @@
-"use client";
+import { MagicCard } from "@/components/ui/magic-card";
 
-import {
-  CookingPot,
-  MessageCircle,
-  Refrigerator,
-  Salad,
-  ShoppingCart,
-  Smartphone,
-  type LucideIcon,
-} from "lucide-react";
-import { forwardRef, useRef, type ReactNode } from "react";
-
-import { AnimatedBeam } from "@/components/ui/animated-beam";
 import { Reveal } from "./reveal";
-import { cn } from "@/lib/utils";
 
-import { LogoMark } from "./logo";
-import { SectionHeading } from "./section-heading";
-
-const Node = forwardRef<
-  HTMLDivElement,
-  { className?: string; children: ReactNode; label: string }
->(({ className, children, label }, ref) => (
-  <div className="flex flex-col items-center gap-2">
-    <div
-      ref={ref}
-      className={cn(
-        "z-10 flex size-14 items-center justify-center rounded-full border bg-card shadow-[0_0_20px_-12px_rgba(0,0,0,0.8)] sm:size-16",
-        className,
-      )}
-    >
-      {children}
-    </div>
-    <span className="text-xs font-medium text-muted-foreground sm:text-sm">
-      {label}
-    </span>
-  </div>
-));
-Node.displayName = "Node";
-
-const STEPS: { icon: LucideIcon; title: string; body: string }[] = [
+const STEPS = [
   {
-    icon: ShoppingCart,
+    label: "01 · Groceries",
+    dot: "bg-protein",
     title: "Buy it",
     body: "The list knows what’s already in the fridge, so “have 6 eggs, need 12” shows up before you double-buy.",
   },
   {
-    icon: Refrigerator,
+    label: "02 · Kitchen",
+    dot: "bg-carbs",
     title: "Put it away",
-    body: "Check items off and they land in the fridge or pantry, with an eye on what expires first.",
+    body: "Check items off and they land in the fridge or pantry, and the ones expiring soonest show first.",
   },
   {
-    icon: CookingPot,
+    label: "03 · Recipes",
+    dot: "bg-fat",
     title: "Cook it",
-    body: "Cook a recipe and the ingredients come out of stock. Short on something? It goes on the list.",
+    body: "Cook a recipe and the ingredients come out of stock. Whatever you're short on goes on the list.",
   },
   {
-    icon: Salad,
+    label: "04 · Today",
+    dot: "bg-kcal",
     title: "Eat it",
-    body: "Log your portion and the real nutrition follows, per person, against each of your goals.",
+    body: "Log what you ate and it counts toward your own goals. Everyone in the house has their own.",
   },
 ];
 
 export function Loop() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const chatRef = useRef<HTMLDivElement>(null);
-  const webRef = useRef<HTMLDivElement>(null);
-  const hubRef = useRef<HTMLDivElement>(null);
-  const groceryRef = useRef<HTMLDivElement>(null);
-  const fridgeRef = useRef<HTMLDivElement>(null);
-  const recipeRef = useRef<HTMLDivElement>(null);
-  const mealRef = useRef<HTMLDivElement>(null);
-
-  const beam = {
-    containerRef,
-    gradientStartColor: "#28cf8b",
-    gradientStopColor: "#b6f0d6",
-    duration: 4,
-  };
-
   return (
-    <section id="how" className="relative py-24 sm:py-32">
-      <div className="mx-auto max-w-6xl px-5">
-        <SectionHeading
-          eyebrow="How it works"
-          title={
-            <>
-              Buy it. Store it. Cook it. Eat it.
-              <br className="hidden sm:block" />{" "}
-              <span className="text-brand">One loop.</span>
-            </>
-          }
-        >
-          Most apps track one of those steps. Foodable tracks the whole loop,
-          and every step points at the same foods. The eggs on your list are
-          the eggs in your fridge are the eggs in tonight’s shakshuka.
-        </SectionHeading>
-
-        <Reveal inView delay={0.1}>
-          <div
-            ref={containerRef}
-            className="relative mx-auto mt-16 flex h-[440px] w-full max-w-3xl items-center justify-between rounded-3xl border bg-card/60 px-6 py-8 shadow-sm sm:h-[460px] sm:px-14"
-          >
-            <div className="flex flex-col gap-14">
-              <Node ref={chatRef} label="Your AI">
-                <MessageCircle className="size-6" />
-              </Node>
-              <Node ref={webRef} label="Web app">
-                <Smartphone className="size-6" />
-              </Node>
-            </div>
-
-            <Node
-              ref={hubRef}
-              label="Foodable"
-              className="size-20 border-brand/40 bg-brand-soft sm:size-24"
-            >
-              <LogoMark className="size-9 sm:size-11" />
-            </Node>
-
-            <div className="flex flex-col gap-4 sm:gap-5">
-              <Node ref={groceryRef} label="Groceries" className="size-12 sm:size-14">
-                <ShoppingCart className="size-5" />
-              </Node>
-              <Node ref={fridgeRef} label="Fridge" className="size-12 sm:size-14">
-                <Refrigerator className="size-5" />
-              </Node>
-              <Node ref={recipeRef} label="Recipes" className="size-12 sm:size-14">
-                <CookingPot className="size-5" />
-              </Node>
-              <Node ref={mealRef} label="Meals" className="size-12 sm:size-14">
-                <Salad className="size-5" />
-              </Node>
-            </div>
-
-            <AnimatedBeam {...beam} fromRef={chatRef} toRef={hubRef} curvature={-40} />
-            <AnimatedBeam {...beam} fromRef={webRef} toRef={hubRef} curvature={40} delay={0.5} />
-            <AnimatedBeam {...beam} fromRef={hubRef} toRef={groceryRef} curvature={-50} delay={0.2} />
-            <AnimatedBeam {...beam} fromRef={hubRef} toRef={fridgeRef} curvature={-15} delay={0.7} />
-            <AnimatedBeam {...beam} fromRef={hubRef} toRef={recipeRef} curvature={15} delay={1.2} />
-            <AnimatedBeam {...beam} fromRef={hubRef} toRef={mealRef} curvature={50} delay={1.7} />
-          </div>
+    <section id="how" className="relative py-16 md:py-24">
+      {/* The beam is a CSS animation. Reduced motion hides it and leaves the
+          track. */}
+      <style
+        dangerouslySetInnerHTML={{
+          __html:
+            "@keyframes fc-beam-slide{from{transform:translateX(-100%)}to{transform:translateX(340%)}}",
+        }}
+      />
+      <div className="mx-auto max-w-6xl px-4 sm:px-5">
+        <Reveal inView>
+          <span className="text-[11px] font-medium tracking-[0.12em] text-faint uppercase">
+            The loop
+          </span>
+          <h2 className="mt-3 max-w-[16ch] text-[34px] leading-[1.05] font-bold text-balance md:text-[52px]">
+            Buy it, put it away, cook it, eat it.
+          </h2>
         </Reveal>
 
-        <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div
+          aria-hidden="true"
+          className="relative mx-[12%] mt-[26px] hidden h-0.5 overflow-hidden rounded-sm bg-track md:block"
+        >
+          <i className="absolute inset-0 w-[30%] bg-[linear-gradient(90deg,transparent,#28cf8b,#b6f0d6,transparent)] motion-safe:animate-[fc-beam-slide_3s_linear_infinite] motion-reduce:hidden" />
+        </div>
+
+        <div className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-4 [&>*]:min-w-0">
           {STEPS.map((s, i) => (
-            <Reveal key={s.title} inView delay={0.1 + i * 0.08}>
-              <div className="h-full rounded-2xl border bg-card p-6 shadow-sm">
-                <div className="flex items-center gap-3">
-                  <span className="flex size-9 items-center justify-center rounded-full bg-brand-soft text-brand">
-                    <s.icon className="size-4.5" />
+            <Reveal key={s.title} inView delay={i * 0.08}>
+              <MagicCard
+                className="h-full rounded-[20px] shadow-sm [&>div:first-child]:bg-panel"
+                gradientSize={260}
+                gradientFrom="#28cf8b"
+                gradientTo="#b6f0d6"
+                gradientColor="#28cf8b"
+                gradientOpacity={0.1}
+              >
+                <div className="p-[22px]">
+                  <span className="flex items-center gap-2 font-heading text-[13px] font-bold text-brand-text">
+                    <span
+                      className={`inline-block size-[7px] flex-none rounded-full ${s.dot}`}
+                    />
+                    {s.label}
                   </span>
-                  <span className="font-mono text-xs text-muted-foreground">
-                    0{i + 1}
-                  </span>
+                  <h3 className="mt-[30px] mb-2 text-[22px] font-bold">
+                    {s.title}
+                  </h3>
+                  <p className="text-sm text-muted-foreground">{s.body}</p>
                 </div>
-                <h3 className="mt-4 text-lg font-semibold">{s.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                  {s.body}
-                </p>
-              </div>
+              </MagicCard>
             </Reveal>
           ))}
         </div>

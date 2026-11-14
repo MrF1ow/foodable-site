@@ -25,15 +25,6 @@ bun run lint
 
 ## Screenshots
 
-`public/shots/` are real app screens from the main repo's fixture preview, one per theme:
-
-```bash
-# in the foodable repo
-bun run preview:app     # serves fixture pages on :4787
-# then, per page and theme (desktop 1200x700 for the Safari frame, 390x844 for the iPhone frame):
-chromium --headless=new --hide-scrollbars --force-device-scale-factor=2 \
-  --window-size=1200,700 --screenshot=nutrition-light.png \
-  http://localhost:4787/nutrition-light.html
-```
+`public/shots/{app,phone,chat}/` hold one image per theme: the desktop app pages for the hero's app window, the phone screens for the Tour, and the in-chat cards. For now they are 2× exports of the FigCraft design, because the main repo can't render the redesigned app pages yet. AGENTS.md's Screenshots section has the paths and how to recapture them from the real app once it can.
 
 Brand assets in `public/brand/`, `public/favicon.ico` and `public/apple-touch-icon.png` are copied from the main repo (`bun run gen:icons` there). Accent is the logo green `#28cf8b`; text on it is `#062c1c`.
