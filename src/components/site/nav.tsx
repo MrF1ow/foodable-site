@@ -94,7 +94,7 @@ export function Nav() {
             href={REPO_URL}
             aria-label="Foodable on GitHub"
             title="Browse the code on GitHub"
-            className="inline-flex size-10 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-raised hover:text-foreground group-data-[small=true]/pill:size-[34px]"
+            className="inline-flex size-10 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-raised hover:text-foreground md:group-data-[small=true]/pill:size-[34px]"
           >
             <GithubIcon className="size-[18px]" />
           </a>
@@ -104,7 +104,7 @@ export function Nav() {
               tabIndex={-1}
               background="#28cf8b"
               shimmerColor="#ffffff"
-              className="h-10 px-[18px] py-0 text-sm font-semibold text-[#062c1c] group-data-[small=true]/pill:h-[34px]"
+              className="h-10 px-[18px] py-0 text-sm font-semibold text-[#062c1c] md:group-data-[small=true]/pill:h-[34px]"
             >
               Host it
             </ShimmerButton>

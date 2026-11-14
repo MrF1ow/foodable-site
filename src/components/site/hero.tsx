@@ -14,19 +14,20 @@ import { shot } from "./themed-shot";
 
 const GREENS = ["#28cf8b", "#7ee2b8", "#14a86c", "#b6f0d6"];
 
-// The gauge arcs draw in once on first paint. Without motion preference (or
-// with reduced motion) there is no animation and they are fully drawn.
+// The gauge arcs draw in once on first paint, one after another: protein,
+// then carbs, then fat, each starting as the last one lands. With reduced
+// motion there is no animation and they are fully drawn.
 const GAUGE_CSS = `
 @keyframes hero-arc-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
 @media (prefers-reduced-motion: no-preference) {
-  .hero-arc { stroke-dasharray: 1; animation: hero-arc-draw 1.2s cubic-bezier(.3,.7,.2,1) both; }
+  .hero-arc { stroke-dasharray: 1; animation: hero-arc-draw .5s cubic-bezier(.3,.7,.2,1) both; }
 }
 `;
 
 const ARCS = [
-  { d: "M40 320 A280 280 0 0 1 84 169", color: "var(--protein)", delay: "0.15s" },
-  { d: "M96 152 A280 280 0 0 1 215 60", color: "var(--carbs)", delay: "0.5s" },
-  { d: "M236 53 A280 280 0 0 1 330 40", color: "var(--fat)", delay: "0.85s" },
+  { d: "M40 320 A280 280 0 0 1 84 169", color: "var(--protein)", delay: "0.15s", duration: "0.5s" },
+  { d: "M96 152 A280 280 0 0 1 215 60", color: "var(--carbs)", delay: "0.7s", duration: "0.48s" },
+  { d: "M236 53 A280 280 0 0 1 330 40", color: "var(--fat)", delay: "1.23s", duration: "0.32s" },
 ];
 
 const LEGEND = [
@@ -113,7 +114,7 @@ export function Hero() {
                 stroke={arc.color}
                 strokeWidth="26"
                 strokeLinecap="round"
-                style={{ animationDelay: arc.delay }}
+                style={{ animationDelay: arc.delay, animationDuration: arc.duration }}
               />
             ))}
           </svg>
