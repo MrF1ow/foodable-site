@@ -35,7 +35,8 @@ export function FinalCta() {
           Making food more <AuroraText colors={GREENS}>doable.</AuroraText>
         </h2>
         <p className="mt-3.5 text-muted-foreground">
-          Free, open source and yours to host.
+          Free, open source and yours to host. This is version one, and
+          there&apos;s a lot more on the way.
         </p>
         <div className="mt-7 flex flex-wrap justify-center gap-2.5">
           <a href="#self-host" className="rounded-full">

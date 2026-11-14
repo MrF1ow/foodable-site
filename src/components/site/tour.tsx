@@ -309,7 +309,8 @@ export function Tour() {
               </div>
               <p className="flex items-center gap-2 text-[13px] text-faint">
                 <Smartphone aria-hidden="true" className="size-4" />
-                Tap the tabs. Scroll the screen.
+                Tap the tabs. On a phone it&apos;s a web app: add it to your
+                home screen and it opens like any other app.
               </p>
             </div>
           </div>
