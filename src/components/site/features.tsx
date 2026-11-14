@@ -79,7 +79,7 @@ export function Features() {
             Features
           </span>
           <h2 className="mt-3 max-w-[22ch] text-[34px] leading-[1.05] font-bold text-balance md:text-[52px]">
-            Everything the kitchen needs. Nothing it doesn’t.
+            The stuff we actually use, every day.
           </h2>
         </Reveal>
 
@@ -248,7 +248,7 @@ export function Features() {
             >
               <div className="flex h-full flex-col items-start gap-4 p-[26px] lg:flex-row lg:items-center lg:gap-8">
                 <div>
-                  <h3 className="text-xl font-bold">Your data, your way</h3>
+                  <h3 className="text-xl font-bold">Take your data with you</h3>
                   <p className="mt-1.5 text-sm text-muted-foreground">
                     Export a ZIP of plain CSVs anytime. Bring your history in
                     from other apps.

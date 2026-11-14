@@ -143,7 +143,7 @@ export function Tour() {
         <Reveal inView>
           <div className="flex flex-col items-start justify-between gap-5 md:flex-row md:items-end md:gap-5">
             <h2 className="max-w-[16ch] text-[34px] leading-[1.05] font-bold md:text-[52px]">
-              One app, four rooms of the kitchen.
+              One app for the whole kitchen.
             </h2>
             <div
               role="tablist"

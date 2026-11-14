@@ -158,12 +158,12 @@ export function Chat() {
             In your assistant
           </span>
           <h2 className="mt-3 max-w-[16ch] text-[34px] leading-[1.05] font-bold text-balance md:text-[52px]">
-            Say it. It&apos;s done.
+            Just ask.
           </h2>
           <p className="mt-4 max-w-[36ch] text-lg text-muted-foreground">
-            Connect Claude, Grok or any MCP client. It reads the fridge, fills
-            the list and logs dinner, and answers with Foodable&apos;s own
-            cards, in light or dark to match your chat.
+            Hook up Claude, Grok or any other MCP client. It can check the
+            fridge, add to the list and log dinner. And it answers with
+            Foodable&apos;s own cards, light or dark to match your chat.
           </p>
           <div className="mt-7 flex gap-7">
             <Fact value={73} label="tools" count={hydrated && !reduced} />

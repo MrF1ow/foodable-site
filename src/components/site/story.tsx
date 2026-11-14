@@ -34,7 +34,7 @@ export function Story() {
             </strong>{" "}
             We use it every day. It’s free, and it’s yours to run.
           </p>
-          <p className="text-[15px] text-faint">— Ethan &amp; family</p>
+          <p className="text-[15px] text-faint">Ethan &amp; family</p>
         </div>
       </Reveal>
     </section>

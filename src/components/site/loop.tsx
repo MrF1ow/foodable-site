@@ -13,19 +13,19 @@ const STEPS = [
     label: "02 · Kitchen",
     dot: "bg-carbs",
     title: "Put it away",
-    body: "Check items off and they land in the fridge or pantry, with an eye on what expires first.",
+    body: "Check items off and they land in the fridge or pantry, and the ones expiring soonest show first.",
   },
   {
     label: "03 · Recipes",
     dot: "bg-fat",
     title: "Cook it",
-    body: "Cook a recipe and the ingredients come out of stock. Short on something? It goes on the list.",
+    body: "Cook a recipe and the ingredients come out of stock. Whatever you're short on goes on the list.",
   },
   {
     label: "04 · Today",
     dot: "bg-kcal",
     title: "Eat it",
-    body: "Log your portion and the real nutrition follows, per person, against each of your goals.",
+    body: "Log what you ate and it counts toward your own goals. Everyone in the house has their own.",
   },
 ];
 

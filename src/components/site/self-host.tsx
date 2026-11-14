@@ -38,7 +38,7 @@ export function SelfHost() {
             Self-host
           </span>
           <h2 className="mt-3 text-[34px] leading-[1.05] font-bold text-balance md:text-[52px]">
-            Free forever. Running in an evening.
+            It&apos;s free. Setup takes an evening.
           </h2>
           <p className="mt-5 max-w-[52ch] text-base text-muted-foreground">
             Foodable isn’t a service you sign up for. It’s software you run for
@@ -76,7 +76,7 @@ export function SelfHost() {
               Give it to your agent
             </h3>
             <p className="mt-1 mb-4 text-sm text-muted-foreground">
-              Foodable ships a setup skill. Paste this into Claude Code, Codex
+              Foodable comes with a setup skill. Paste this into Claude Code, Codex
               or any agent that can run commands. It asks what accounts you
               have, runs the commands it can, and tells you what to click for
               the rest.
@@ -91,7 +91,7 @@ export function SelfHost() {
             />
           </div>
           <p className="mb-3 px-1 text-sm font-medium text-muted-foreground">
-            Rather do it yourself? It’s a handful of commands.
+            Doing it by hand is just a handful of commands.
           </p>
           <Terminal
             className="h-auto max-h-none w-full max-w-none overflow-x-auto rounded-[20px] border-line bg-raised text-muted-foreground [&_.rounded-full]:bg-track [&_pre]:min-h-[268px] [&_pre]:px-5 [&_pre]:py-4"
