@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils";
 
 // A blur-and-drop entrance in plain CSS, used by every section so they all
 // move the same way. Without `inView` it plays as soon as the HTML paints,
-// which keeps the hero (and the LCP screenshot) off the JavaScript path.
+// which keeps the hero off the JavaScript path.
 // With `inView` it waits, paused on its first frame, until scrolled to.
 const ENTER =
   "motion-safe:animate-in fade-in blur-in-[6px] slide-in-from-top-[6px] fill-mode-both duration-400 ease-[cubic-bezier(0,0,0.58,1)]";
