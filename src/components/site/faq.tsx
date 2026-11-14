@@ -10,6 +10,10 @@ const FAQ: { q: string; a: ReactNode }[] = [
     a: "Yes. Foodable is MIT-licensed open source. There’s no paid tier, no ads and no account with us. The only costs are whatever you pay to host it, which can be nothing if you run it at home.",
   },
   {
+    q: "Is there a phone app?",
+    a: "Not in the app stores. Foodable is a web app that runs on your own server, and you open it in any browser. On your phone, add it to your home screen and it opens full screen, like any other app.",
+  },
+  {
     q: "Do I need an AI assistant to use it?",
     a: "No. The web app covers the fridge, groceries, recipes, nutrition and settings on its own. Connecting an assistant just makes it faster: say what you want instead of tapping through it.",
   },
@@ -40,6 +44,10 @@ const FAQ: { q: string; a: ReactNode }[] = [
   {
     q: "Can more than one person use it?",
     a: "That’s the point. The owner adds household members, everyone signs in with their own username, and each person keeps their own goals and food log while sharing the kitchen.",
+  },
+  {
+    q: "What’s coming next?",
+    a: "A lot. This is version one. Next up are a barcode scanner, a score for the foods you buy (weighted the way you choose), and sharing a recipe or grocery list by link.",
   },
   {
     q: "Is the nutrition info medical advice?",

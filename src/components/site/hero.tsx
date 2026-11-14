@@ -140,8 +140,9 @@ export function Hero() {
 
         <Reveal delay={0.3}>
           <p className="mx-auto mt-6 max-w-[46ch] text-base text-muted-foreground md:text-[19px]">
-            The fridge, the grocery list, recipes and what you ate, in one app
-            your household runs itself. Talk to it from any AI assistant.
+            The fridge, the grocery list, recipes and what you ate, in one web
+            app your household runs itself. Open it in any browser, add it to
+            your phone&apos;s home screen, or talk to it from any AI assistant.
           </p>
         </Reveal>
 
