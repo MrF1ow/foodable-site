@@ -51,6 +51,7 @@ export function Reveal({
   return (
     <div
       ref={ref}
+      data-reveal=""
       className={cn(ENTER, !shown && "[animation-play-state:paused]!", className)}
       style={
         { "--tw-animation-delay": `${40 + delay * 1000}ms` } as CSSProperties

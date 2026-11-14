@@ -22,8 +22,8 @@ There is no formatter yet. Do not add Prettier: the owner wants Bun-only tooling
 
 ## Layout
 
-- `src/app/page.tsx` puts the sections together in order: Nav, Hero, Story, Loop, Chat, Features, Screens, SelfHost, Faq, FinalCta, Footer.
-- `src/components/site/` holds one file per section, plus the small helpers `logo.tsx`, `section-heading.tsx`, `themed-shot.tsx`, `theme-toggle.tsx`, `reveal.tsx`, `agent-prompt.tsx` and `github-icon.tsx`.
+- `src/app/page.tsx` puts the sections together in order: Nav, Hero, Tour, Story, Loop, Chat, Features, SelfHost, Faq, FinalCta, Footer.
+- `src/components/site/` holds one file per section, plus the hero's clickable app window `app-demo.tsx` and the small helpers `logo.tsx`, `themed-shot.tsx`, `theme-toggle.tsx`, `reveal.tsx`, `agent-prompt.tsx` and `github-icon.tsx`.
 - `src/components/ui/` holds vendored shadcn / Magic UI components, kept as the registry ships them and excluded from lint. The one local change: `safari.tsx` and `iphone.tsx` add a per-instance `useId()` suffix to their SVG mask and clip ids. Keep that change if you re-pull them (see Gotchas).
 - `src/lib/site.ts` holds the site, repo, docs and upstream URLs. Link through these constants and never hardcode the URLs.
 - `src/app/globals.css` holds the theme tokens. Besides the shadcn ones it has the design tokens `--panel`, `--raised`, `--track`, `--line`, `--text-2`, `--text-3`, `--accent-text` and `--glass`, exposed as Tailwind colours (`bg-panel`, `bg-raised`, `bg-track`, `border-line`, `text-faint`, `text-brand-text`, `bg-glass`). `--text-2` is `text-muted-foreground`.
@@ -78,8 +78,8 @@ magick shot.png -quality 82 -define webp:method=6 shot.webp
 - **Duplicate SVG ids blank the device frames.** The Safari and iPhone frames mask their screens by id. With several frames on the page, and the dark twins inside `display: none`, a shared id breaks every other frame and the screenshot disappears. That is why the ids use `useId()`.
 - **Swap themed content with wrapper divs.** Use `Themed` (wrapper divs) rather than `hidden dark:block` on a component that sets its own `display` (`inline-block`). Which class wins then depends on CSS order.
 - **Marquees inside grid items cause horizontal overflow on mobile.** A grid item's `min-width: auto` grows to the marquee's full width, and the page was once 4364px wide at 390px. Two-column section grids use `[&>*]:min-w-0`, and `<main>` has `overflow-x-clip`. After any layout change, check the page at 390px wide.
-- **Bento backgrounds are absolutely positioned.** They overlap a card's icon and title if they're too tall. Rows are `26rem` below `lg` and `22rem` at `lg` and up.
-- **Never hide the hero behind JavaScript.** The hero used Magic UI's `BlurFade`, which renders at `opacity: 0` until React hydrates, and that pushed mobile LCP to ~13s. Every section now uses `Reveal` (`reveal.tsx`), one CSS entrance: it plays on first paint by default, and with `inView` it waits until scrolled to. Use it for entrances so all sections move the same way, and never put `inView` on anything in the first screen.
+- **Bento visuals sit at the bottom of fixed-height rows.** Rows are 310px, 310px and 132px at `lg` and up and auto below it. A visual that grows taller than its row pushes into the card's title, so check the cards at 1024px and 1280px after changing one.
+- **Never hide the hero behind JavaScript.** The hero used Magic UI's `BlurFade`, which renders at `opacity: 0` until React hydrates, and that pushed mobile LCP to ~13s. Every section now uses `Reveal` (`reveal.tsx`), one CSS entrance: it plays on first paint by default, and with `inView` it waits until scrolled to. Use it for entrances so all sections move the same way, and never put `inView` on anything in the first screen. Without JavaScript an `inView` entrance would never un-pause, so a `<noscript>` style in `layout.tsx` turns off every `Reveal` animation (`data-reveal`).
 - **Static export only.** Do not add server features (route handlers, `next/image` optimization, ISR, middleware). `images.unoptimized` is on, and `<img>` is fine.
 
 ## Workflow

@@ -29,6 +29,11 @@ const chrome = spawn(
   [
     "/usr/bin/chromium", "--headless=new", "--no-sandbox",
     "--hide-scrollbars", "--remote-debugging-port=0", `--user-data-dir=${profile}`,
+    // Headless Chromium stops producing frames for a tab it thinks is in the
+    // background, so IntersectionObserver never fires and inView sections stay
+    // blank (it hit the second theme of every run). Keep it rendering.
+    "--disable-renderer-backgrounding", "--disable-background-timer-throttling",
+    "--disable-backgrounding-occluded-windows",
     "about:blank",
   ],
   { stdout: "ignore", stderr: "ignore" },
@@ -56,7 +61,9 @@ try {
       ws.send(JSON.stringify({ id: n, method, params }));
     });
   const js = async (expression: string) =>
-    (await send("Runtime.evaluate", { expression, awaitPromise: true, returnByValue: true })).result.value;
+    (await send("Runtime.evaluate", { expression, returnByValue: true })).result.value;
+  await send("Page.bringToFront");
+  await send("Emulation.setFocusEmulationEnabled", { enabled: true });
 
   for (const theme of ["light", "dark"]) {
     for (const [width, height] of [[1280, 800], [390, 844]]) {
