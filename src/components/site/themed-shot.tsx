@@ -1,7 +1,23 @@
 import type { ReactNode } from "react";
 
-/** Screenshots live in public/shots, one per theme, taken from the real app. */
-export function shot(name: string, theme: "light" | "dark", mobile = false) {
+/** Redesign screenshots: public/shots/<kind>/<name>-<theme>.webp. */
+export function shot(
+  kind: "app" | "phone" | "chat",
+  name: string,
+  theme: "light" | "dark",
+) {
+  return `/shots/${kind}/${name}-${theme}.webp`;
+}
+
+/**
+ * The old screenshots in public/shots. This goes away, with those files, once
+ * every section uses the new shots.
+ */
+export function legacyShot(
+  name: string,
+  theme: "light" | "dark",
+  mobile = false,
+) {
   return `/shots/${name}-${theme}${mobile ? "-mobile" : ""}.webp`;
 }
 

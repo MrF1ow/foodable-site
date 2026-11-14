@@ -2,7 +2,7 @@ import { Reveal } from "./reveal";
 import { Iphone } from "@/components/ui/iphone";
 
 import { SectionHeading } from "./section-heading";
-import { shot, Themed } from "./themed-shot";
+import { legacyShot, Themed } from "./themed-shot";
 
 const PHONES = [
   { name: "fridge", label: "What’s in the house" },
@@ -36,8 +36,8 @@ export function Screens() {
             >
               <div className="drop-shadow-2xl">
                 <Themed
-                  light={<Iphone src={shot(p.name, "light", true)} />}
-                  dark={<Iphone src={shot(p.name, "dark", true)} />}
+                  light={<Iphone src={legacyShot(p.name, "light", true)} />}
+                  dark={<Iphone src={legacyShot(p.name, "dark", true)} />}
                 />
               </div>
               <p className="mt-5 text-center text-sm font-medium text-muted-foreground">

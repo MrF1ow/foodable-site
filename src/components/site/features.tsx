@@ -17,7 +17,7 @@ import { DOCS_URL, REPO_URL } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 import { SectionHeading } from "./section-heading";
-import { shot, Themed } from "./themed-shot";
+import { legacyShot, Themed } from "./themed-shot";
 
 const FRIDGE = [
   { name: "Eggs", meta: "6 each", tone: "soon", where: "Fridge" },
@@ -224,9 +224,9 @@ const CARDS = [
       >
         <Themed
           // eslint-disable-next-line @next/next/no-img-element
-          light={<img src={shot("nutrition", "light")} alt="" className="w-full" />}
+          light={<img src={legacyShot("nutrition", "light")} alt="" className="w-full" />}
           // eslint-disable-next-line @next/next/no-img-element
-          dark={<img src={shot("nutrition", "dark")} alt="" className="w-full" />}
+          dark={<img src={legacyShot("nutrition", "dark")} alt="" className="w-full" />}
         />
       </div>
     ),

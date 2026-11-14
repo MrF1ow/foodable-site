@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils";
 
 import { GithubIcon } from "./github-icon";
 import { Reveal } from "./reveal";
-import { shot, Themed } from "./themed-shot";
+import { legacyShot, Themed } from "./themed-shot";
 
 const GREENS = ["#28cf8b", "#7ee2b8", "#14a86c", "#b6f0d6"];
 
@@ -24,14 +24,14 @@ export function Hero() {
       <link
         rel="preload"
         as="image"
-        href={shot("nutrition", "light")}
+        href={legacyShot("nutrition", "light")}
         media="(prefers-color-scheme: light)"
         fetchPriority="high"
       />
       <link
         rel="preload"
         as="image"
-        href={shot("nutrition", "dark")}
+        href={legacyShot("nutrition", "dark")}
         media="(prefers-color-scheme: dark)"
         fetchPriority="high"
       />
@@ -103,14 +103,14 @@ export function Hero() {
               light={
                 <Safari
                   url="foodable.your-home.net"
-                  imageSrc={shot("nutrition", "light")}
+                  imageSrc={legacyShot("nutrition", "light")}
                   className="w-full drop-shadow-2xl"
                 />
               }
               dark={
                 <Safari
                   url="foodable.your-home.net"
-                  imageSrc={shot("nutrition", "dark")}
+                  imageSrc={legacyShot("nutrition", "dark")}
                   className="w-full drop-shadow-2xl"
                 />
               }
@@ -134,14 +134,14 @@ export function Hero() {
           </div>
           <div className="absolute -right-4 -bottom-10 hidden w-[200px] rotate-3 drop-shadow-2xl md:block lg:-right-12 lg:w-[230px]">
             <Themed
-              light={<Iphone src={shot("grocery", "light", true)} />}
-              dark={<Iphone src={shot("grocery", "dark", true)} />}
+              light={<Iphone src={legacyShot("grocery", "light", true)} />}
+              dark={<Iphone src={legacyShot("grocery", "dark", true)} />}
             />
           </div>
           <div className="absolute -bottom-8 -left-4 hidden w-[180px] -rotate-3 drop-shadow-2xl md:block lg:-left-12 lg:w-[210px]">
             <Themed
-              light={<Iphone src={shot("fridge", "light", true)} />}
-              dark={<Iphone src={shot("fridge", "dark", true)} />}
+              light={<Iphone src={legacyShot("fridge", "light", true)} />}
+              dark={<Iphone src={legacyShot("fridge", "dark", true)} />}
             />
           </div>
         </Reveal>
