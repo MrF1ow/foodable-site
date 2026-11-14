@@ -5,9 +5,9 @@ import { FinalCta, Footer } from "@/components/site/footer";
 import { Hero } from "@/components/site/hero";
 import { Loop } from "@/components/site/loop";
 import { Nav } from "@/components/site/nav";
-import { Screens } from "@/components/site/screens";
 import { SelfHost } from "@/components/site/self-host";
 import { Story } from "@/components/site/story";
+import { Tour } from "@/components/site/tour";
 
 export default function Home() {
   return (
@@ -15,11 +15,11 @@ export default function Home() {
       <Nav />
       <main className="overflow-x-clip">
         <Hero />
+        <Tour />
         <Story />
         <Loop />
         <Chat />
         <Features />
-        <Screens />
         <SelfHost />
         <Faq />
         <FinalCta />
