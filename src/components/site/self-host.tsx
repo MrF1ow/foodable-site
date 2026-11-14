@@ -1,7 +1,6 @@
-import { BookOpen, Bot, Database, Server, Zap } from "lucide-react";
+import { BookOpen } from "lucide-react";
 
-import { Reveal } from "./reveal";
-import { MagicCard } from "@/components/ui/magic-card";
+import { BorderBeam } from "@/components/ui/border-beam";
 import {
   AnimatedSpan,
   Terminal,
@@ -10,22 +9,18 @@ import {
 import { DOCS_URL } from "@/lib/site";
 
 import { AgentPrompt } from "./agent-prompt";
-
-import { SectionHeading } from "./section-heading";
+import { Reveal } from "./reveal";
 
 const NEEDS = [
   {
-    icon: Zap,
     title: "Bun",
     body: "The runtime. One install command and you’re set.",
   },
   {
-    icon: Database,
     title: "A Postgres database",
     body: "Any Postgres works. It holds your data and your logins, so there’s no separate auth service to run.",
   },
   {
-    icon: Server,
     title: "Somewhere to run it",
     body: "A box at home, Docker, or a small cloud host like Railway (about $5 a month).",
   },
@@ -33,101 +28,96 @@ const NEEDS = [
 
 export function SelfHost() {
   return (
-    <section id="self-host" className="py-24 sm:py-32">
-      <div className="mx-auto max-w-6xl px-5">
-        <SectionHeading
-          eyebrow="Self-host"
-          title="Free forever. Running in an evening."
-        >
-          Foodable isn’t a service you sign up for. It’s software you run for
-          your own household, so there’s nobody in the middle and nothing to
-          pay us. You don’t have to do it by hand: give it to your agent.
-        </SectionHeading>
+    <section
+      id="self-host"
+      className="relative border-y border-line bg-panel py-16 md:py-24"
+    >
+      <div className="mx-auto grid max-w-6xl gap-7 px-4 sm:px-5 md:gap-12 lg:grid-cols-2 [&>*]:min-w-0">
+        <Reveal inView>
+          <span className="text-[11px] font-medium tracking-[0.12em] text-faint uppercase">
+            Self-host
+          </span>
+          <h2 className="mt-3 text-[34px] leading-[1.05] font-bold text-balance md:text-[52px]">
+            Free forever. Running in an evening.
+          </h2>
+          <p className="mt-5 max-w-[52ch] text-base text-muted-foreground">
+            Foodable isn’t a service you sign up for. It’s software you run for
+            your own household, so there’s nobody in the middle and nothing to
+            pay us.
+          </p>
+          <ol className="mt-7">
+            {NEEDS.map((n, i) => (
+              <li
+                key={n.title}
+                className="flex items-start gap-2.5 border-t border-line py-4 first:border-t-0"
+              >
+                <span className="w-7 flex-none font-heading text-[15px] font-bold text-brand-text">
+                  {i + 1}
+                </span>
+                <div>
+                  <b className="font-semibold">{n.title}</b>
+                  <p className="mt-0.5 text-muted-foreground">{n.body}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+          <a
+            href={DOCS_URL}
+            className="mt-3 inline-flex items-center gap-2 text-sm font-medium text-brand-text hover:underline"
+          >
+            <BookOpen className="size-4" />
+            Read the full self-hosting guide
+          </a>
+        </Reveal>
 
-        <Reveal inView delay={0.05} className="mx-auto mt-12 max-w-3xl">
-          <div className="rounded-2xl border bg-brand-soft p-6 sm:p-8">
-            <div className="flex items-center gap-3">
-              <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-brand text-on-brand">
-                <Bot className="size-5" />
-              </span>
-              <h3 className="text-xl font-semibold">Give it to your agent</h3>
-            </div>
-            <p className="mt-3 text-muted-foreground">
+        <Reveal inView delay={0.1}>
+          <div className="relative mb-3 overflow-hidden rounded-[20px] border border-line bg-background p-5">
+            <h3 className="font-sans text-base font-semibold">
+              Give it to your agent
+            </h3>
+            <p className="mt-1 mb-4 text-sm text-muted-foreground">
               Foodable ships a setup skill. Paste this into Claude Code, Codex
               or any agent that can run commands. It asks what accounts you
               have, runs the commands it can, and tells you what to click for
               the rest.
             </p>
-            <div className="mt-5">
-              <AgentPrompt />
-            </div>
+            <AgentPrompt />
+            <BorderBeam
+              size={140}
+              duration={9}
+              colorFrom="#28cf8b"
+              colorTo="#b6f0d6"
+              className="motion-reduce:hidden"
+            />
           </div>
-        </Reveal>
-
-        <Reveal inView delay={0.05}>
-          <p className="mt-14 text-center text-sm font-medium text-muted-foreground">
+          <p className="mb-3 px-1 text-sm font-medium text-muted-foreground">
             Rather do it yourself? It’s a handful of commands.
           </p>
+          <Terminal
+            className="h-auto max-h-none w-full max-w-none overflow-x-auto rounded-[20px] border-line bg-raised text-muted-foreground [&_.rounded-full]:bg-track [&_pre]:min-h-[268px] [&_pre]:px-5 [&_pre]:py-4"
+            sequence
+            startOnView
+          >
+            <TypingAnimation>$ git clone https://github.com/MrF1ow/foodable</TypingAnimation>
+            <TypingAnimation>$ cd foodable &amp;&amp; bun install</TypingAnimation>
+            <AnimatedSpan className="text-muted-foreground">
+              ✔ Dependencies installed
+            </AnimatedSpan>
+            <TypingAnimation>$ cp .env.example .env</TypingAnimation>
+            <TypingAnimation>$ bun run generate-oauth-creds</TypingAnimation>
+            <AnimatedSpan className="text-muted-foreground">
+              ✔ OAuth client and session secret ready, paste into .env
+            </AnimatedSpan>
+            <TypingAnimation>$ bun run db:migrate</TypingAnimation>
+            <AnimatedSpan className="text-muted-foreground">
+              ✔ Migrations applied
+            </AnimatedSpan>
+            <TypingAnimation>$ bun src/index.ts</TypingAnimation>
+            <AnimatedSpan className="text-brand-text">
+              🥗 Foodable is cooking on http://localhost:8080
+            </AnimatedSpan>
+          </Terminal>
         </Reveal>
-
-        <div className="mt-6 grid items-start gap-8 lg:grid-cols-[1.15fr_1fr] [&>*]:min-w-0">
-          <Reveal inView delay={0.1}>
-            <Terminal className="max-h-none overflow-x-auto w-full max-w-none bg-card shadow-xl" sequence startOnView>
-              <TypingAnimation>$ git clone https://github.com/MrF1ow/foodable</TypingAnimation>
-              <TypingAnimation>$ cd foodable &amp;&amp; bun install</TypingAnimation>
-              <AnimatedSpan className="text-muted-foreground">
-                ✔ Dependencies installed
-              </AnimatedSpan>
-              <TypingAnimation>$ cp .env.example .env</TypingAnimation>
-              <TypingAnimation>$ bun run generate-oauth-creds</TypingAnimation>
-              <AnimatedSpan className="text-muted-foreground">
-                ✔ OAuth client and session secret ready, paste into .env
-              </AnimatedSpan>
-              <TypingAnimation>$ bun run db:migrate</TypingAnimation>
-              <AnimatedSpan className="text-muted-foreground">
-                ✔ Migrations applied
-              </AnimatedSpan>
-              <TypingAnimation>$ bun src/index.ts</TypingAnimation>
-              <AnimatedSpan className="text-brand">
-                🥗 Foodable is cooking on http://localhost:8080
-              </AnimatedSpan>
-            </Terminal>
-          </Reveal>
-
-          <div className="flex flex-col gap-4">
-            {NEEDS.map((n, i) => (
-              <Reveal key={n.title} inView delay={0.15 + i * 0.08}>
-                <MagicCard
-                  className="rounded-2xl"
-                  gradientColor="rgba(40,207,139,0.12)"
-                  gradientFrom="#28cf8b"
-                  gradientTo="#b6f0d6"
-                >
-                  <div className="flex gap-4 p-5">
-                    <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-brand-soft text-brand">
-                      <n.icon className="size-5" />
-                    </span>
-                    <div>
-                      <h3 className="font-semibold">{n.title}</h3>
-                      <p className="mt-1 text-sm text-muted-foreground">
-                        {n.body}
-                      </p>
-                    </div>
-                  </div>
-                </MagicCard>
-              </Reveal>
-            ))}
-            <Reveal inView delay={0.4}>
-              <a
-                href={DOCS_URL}
-                className="inline-flex items-center gap-2 px-1 text-sm font-medium text-brand hover:underline"
-              >
-                <BookOpen className="size-4" />
-                Read the full self-hosting guide
-              </a>
-            </Reveal>
-          </div>
-        </div>
       </div>
     </section>
   );
