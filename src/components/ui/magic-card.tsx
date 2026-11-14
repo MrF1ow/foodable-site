@@ -125,6 +125,7 @@ export function MagicCard(props: MagicCardProps) {
 
   const handlePointerMove = useCallback(
     (e: React.PointerEvent<HTMLDivElement>) => {
+      if (e.pointerType === "touch") return
       const rect = e.currentTarget.getBoundingClientRect()
       mouseX.set(e.clientX - rect.left)
       mouseY.set(e.clientY - rect.top)
@@ -132,13 +133,16 @@ export function MagicCard(props: MagicCardProps) {
     [mouseX, mouseY]
   )
 
+  // Local change: the glow is a mouse hover effect only. On touch, a finger
+  // landing on the card while scrolling snapped the glow to it and away
+  // again (a flicker), so touch pointers are ignored.
   useEffect(() => {
     reset("init")
   }, [reset])
 
   useEffect(() => {
     const handleGlobalPointerOut = (e: PointerEvent) => {
-      if (!e.relatedTarget) reset("global")
+      if (e.pointerType !== "touch" && !e.relatedTarget) reset("global")
     }
     const handleBlur = () => reset("global")
     const handleVisibility = () => {
@@ -163,8 +167,8 @@ export function MagicCard(props: MagicCardProps) {
         className
       )}
       onPointerMove={handlePointerMove}
-      onPointerLeave={() => reset("leave")}
-      onPointerEnter={() => reset("enter")}
+      onPointerLeave={(e) => e.pointerType !== "touch" && reset("leave")}
+      onPointerEnter={(e) => e.pointerType !== "touch" && reset("enter")}
       style={{
         background: useMotionTemplate`
           linear-gradient(var(--color-background) 0 0) padding-box,

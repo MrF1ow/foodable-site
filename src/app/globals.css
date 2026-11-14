@@ -256,6 +256,8 @@
   }
   html {
     @apply font-sans scroll-smooth;
+    /* No grey flash when a finger lands on a control. */
+    -webkit-tap-highlight-color: transparent;
   }
   body {
     @apply bg-background text-foreground;
