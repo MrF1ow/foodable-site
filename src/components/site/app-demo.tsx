@@ -51,7 +51,7 @@ export function AppDemo() {
   }
 
   return (
-    <div className="relative mx-4 rounded-t-[22px] border border-b-0 border-line bg-background text-left shadow-[0_-30px_80px_-40px_rgba(40,207,139,0.35)] md:mx-6 md:max-w-[1120px] min-[1168px]:mx-auto">
+    <div className="relative mx-4 rounded-t-[22px] border border-b-0 border-line bg-background text-left shadow-[0_-30px_80px_-40px_rgba(40,207,139,0.35)] md:mx-auto md:w-[calc(100%-48px)] md:max-w-[1120px]">
       <BorderBeam
         className="motion-reduce:hidden"
         size={220}
