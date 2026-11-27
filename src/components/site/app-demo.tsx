@@ -44,7 +44,7 @@ export function AppDemo() {
   const kitchenOpen = page === "kitchen" || page === "groceries";
 
   // Every click starts the page at the top, even a click on the page already
-  // shown (Overview while on Kitchen), as the mockup does.
+  // shown (Fridge while on Kitchen), as the mockup does.
   function go(p: Page) {
     setPage(p);
     if (viewRef.current) viewRef.current.scrollTop = 0;
@@ -129,7 +129,7 @@ export function AppDemo() {
                         page === "kitchen" && "text-foreground",
                       )}
                     >
-                      Overview
+                      Fridge
                     </button>
                     <button
                       type="button"
