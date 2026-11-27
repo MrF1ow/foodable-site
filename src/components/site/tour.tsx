@@ -141,14 +141,17 @@ export function Tour() {
     <section id="tour" className="border-t border-line py-20 sm:py-28">
       <div className="mx-auto max-w-[1120px] px-5 md:px-10">
         <Reveal inView>
-          <div className="flex flex-col items-start justify-between gap-5 md:flex-row md:items-end md:gap-5">
+          {/* From lg up, the same two columns as the panel below, so the tabs
+              sit centred over the phone. Below lg a column is narrower than
+              the tabs, so they stay right-aligned. */}
+          <div className="flex flex-col items-start justify-between gap-5 md:flex-row md:items-end lg:grid lg:grid-cols-2 lg:gap-12 [&>*]:min-w-0">
             <h2 className="max-w-[16ch] text-[34px] leading-[1.05] font-bold md:text-[52px]">
               One app for the whole kitchen.
             </h2>
             <div
               role="tablist"
               aria-label="Rooms of the app"
-              className="inline-flex max-w-full gap-1 overflow-x-auto rounded-full border border-line bg-glass p-[5px] backdrop-blur-lg [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+              className="inline-flex max-w-full gap-1 overflow-x-auto rounded-full lg:justify-self-center border border-line bg-glass p-[5px] backdrop-blur-lg [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
             >
               {TABS.map((t) => (
                 <button
